@@ -1,0 +1,13 @@
+
+
+1) Repository Created
+2) Branching Strategy
+- One Main Branch and for every feature added a feature branch
+
+3) Integrated IDE with Eclipse, Performed initial commit and push
+4) Created a branch for exeptions (try catch finally) and merge it with my main branch.
+5) Merge Conflicts:
+- None
+
+6)
+7) Added try catch functionality
