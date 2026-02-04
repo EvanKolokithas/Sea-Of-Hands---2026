@@ -1,18 +1,26 @@
 package seaOfHands;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * Main Class for the game
  * 
  * @author Evan
  */
 public class Game {
-
+	
+	
+	final static Logger log = 
+			LogManager.getLogger("Example");
 	
 	public static void main(String[] args) {
 		
 		try {
+			log.debug("Hello World");
+			log.info("Hello World Again");
 			//Example Function
-			startGame();
+			//startGame();
 		}
 		catch(IllegalStateException e) {
 			System.out.println("Game failed to start: " + e);

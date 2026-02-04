@@ -9,5 +9,6 @@
 5) Merge Conflicts:
 - None
 
-6)
+6) Revert Successfull
 7) Added try catch functionality
+8) Added Logging Functionality
