@@ -1,4 +1,4 @@
-
+Progect 2
 
 1) Repository Created
 2) Branching Strategy
@@ -9,5 +9,5 @@
 5) Merge Conflicts:
 - None
 
-6)
+6) Edited Game.java
 7) Added try catch functionality

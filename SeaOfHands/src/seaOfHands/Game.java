@@ -13,6 +13,9 @@ public class Game {
 		try {
 			//Example Function
 			startGame();
+			
+			//edit for revert demo
+			System.out.println("This will be reverted");
 		}
 		catch(IllegalStateException e) {
 			System.out.println("Game failed to start: " + e);
