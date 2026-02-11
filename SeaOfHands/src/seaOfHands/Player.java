@@ -2,18 +2,21 @@ package seaOfHands;
 
 public class Player extends Entity implements Damagable, Damager{
 	
+	//vars
 	
-	private int stamina;
-	//private Inventory inv = new Inventory();
+	private int energy;
+	private Inventory inv = new Inventory();
 	
+	//constructor
 	
-	
-	public Player(int health, int stamina) {
+	public Player(int health, int energy) {
 		super(health);
 		
-		this.stamina = stamina;
+		this.energy = energy;
 	}
 
+	//Methods
+	
 	@Override
 	public int attack() {
 		// TODO Auto-generated method stub
@@ -26,13 +29,12 @@ public class Player extends Entity implements Damagable, Damager{
 		
 	}
 	
-	//getters
 	public int getHealth() {
 		return this.health;
 	}
 	
 	public int getStamina() {
-		return this.stamina;
+		return this.energy;
 	}
 	
 }

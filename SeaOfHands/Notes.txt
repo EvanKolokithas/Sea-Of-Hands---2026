@@ -16,3 +16,9 @@ Unit 2
 Unit 3
 
 1) set up basic class structure with interfaces
+
+Plan to make individual classes for different commands, Use command implements command, etc
+There would also responsibly be a method corresponding to each of them in game
+
+
+

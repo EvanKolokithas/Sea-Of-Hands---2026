@@ -14,7 +14,7 @@ public abstract class POI {
 		this.camp = camp;
 	}
 	
-	//getters
+	//Methods
 	
 	public String getName() {
 		return name;
@@ -28,4 +28,7 @@ public abstract class POI {
 		return name + " : " + desc;
 	}
 	
+	public void setUpCamp() {
+		camp = true;
+	}
 }

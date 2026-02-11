@@ -1,5 +1,5 @@
 package seaOfHands;
 
 public interface Lootable {
-	//List<Item> loot() throws Exception;
+	Inventory loot() throws Exception;
 }
