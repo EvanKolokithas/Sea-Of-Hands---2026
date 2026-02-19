@@ -1,4 +1,12 @@
-02-10-2026 19:32:29.747 DEBUG [Example] - Hello World
-02-10-2026 19:32:29.755 INFO  [Example] - Hello World Again
-02-10-2026 20:09:13.459 DEBUG [Example] - Hello World
-02-10-2026 20:09:13.461 INFO  [Example] - Hello World Again
+02-19-2026 16:50:00.076 DEBUG [Example] - Hello World
+02-19-2026 16:50:00.084 INFO  [Example] - Hello World Again
+02-19-2026 16:54:38.790 DEBUG [Example] - Hello World
+02-19-2026 16:54:38.793 INFO  [Example] - Hello World Again
+02-19-2026 16:56:07.098 DEBUG [Example] - Hello World
+02-19-2026 16:56:07.100 INFO  [Example] - Hello World Again
+02-19-2026 16:57:41.734 DEBUG [Example] - Hello World
+02-19-2026 16:57:41.738 INFO  [Example] - Hello World Again
+02-19-2026 16:57:51.931 DEBUG [Example] - Hello World
+02-19-2026 16:57:51.934 INFO  [Example] - Hello World Again
+02-19-2026 16:59:07.916 DEBUG [Example] - Hello World
+02-19-2026 16:59:07.919 INFO  [Example] - Hello World Again

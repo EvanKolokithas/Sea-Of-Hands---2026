@@ -22,3 +22,7 @@ There would also responsibly be a method corresponding to each of them in game
 
 2) changed Game class to be a singleton pattern. 
 
+Unit 4 a
+
+1) created messages properties based on time and utilized time in a tst message in game to showcase
+
