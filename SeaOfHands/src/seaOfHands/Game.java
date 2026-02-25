@@ -5,10 +5,18 @@ import org.apache.logging.log4j.Logger;
 
 import dataBase.DatabaseManager;
 
-//for date time project
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.Map;
+import java.util.List;
+import java.util.TreeMap;
+import java.util.Set;
+import java.util.TreeSet;
+
 
 
 
@@ -28,16 +36,10 @@ public class Game {
 	private static Game instance;
 	
 	//vars
-	private World world;
-	private WorldState worldState;
+	private static World world = new World();
+	private static WorldState worldState = new WorldState();
 	
-	
-	//constructor
-	private Game() {
-		//temporary starting location
-		world = new World(new Envoirment("temp","temp",true,null));
-		worldState = new WorldState();
-	}
+
 	
 	public static Game getInstance() {
 		if (instance == null) {
@@ -77,6 +79,60 @@ public class Game {
 			//TODO log actual info
 			//log.debug("Hello World");
 			//log.info("Hello World Again");
+			
+			//tests for Unit 5
+			
+			// Sort alphabetically (natural order)
+			List<Structure> allStructures = world.getAllStructures();
+			
+			// Sort alphabetically using Comparable (natural order)
+			Collections.sort(allStructures);
+			System.out.println("Structures sorted alphabetically:");
+			for (Structure s : allStructures) {
+			    System.out.println(s.getName() + " (Sanity " + s.getSanityLevel() + ")");
+			}
+
+			// Sort by sanity using Comparator
+			allStructures.sort(Structure.SanityComparator);
+			System.out.println("\nStructures sorted by sanity:");
+			for (Structure s : allStructures) {
+			    System.out.println(s.getName() + " (Sanity " + s.getSanityLevel() + ")");
+			}
+			
+			
+			//store all structures in a treeset for demonstration
+			Set<String> structureNames = new TreeSet<>();
+			for (Structure s : allStructures) {
+			    structureNames.add(s.getName());
+			}
+			
+			System.out.println("\nDemonstrating a Set (tree set):");
+			for (String name : structureNames) {
+			    System.out.println(name);
+			}
+			
+			//store all structures along with their sanities in a treemap
+			Map<Integer, List<Structure>> structuresBySanity = new TreeMap<>();
+
+			for (Structure s : allStructures) {
+			    //get sanity
+				int sanity = s.getSanityLevel();
+			    
+				//creates a new array list for each sanity level
+			    structuresBySanity.putIfAbsent(sanity, new ArrayList<>());
+			    structuresBySanity.get(sanity).add(s);
+			}
+
+			
+			System.out.println("\nDemonstrating a Map (structures grouped by sanity):");
+			for (Map.Entry<Integer, List<Structure>> entry : structuresBySanity.entrySet()) {
+			    System.out.println("Sanity " + entry.getKey() + ":");
+			    for (Structure s : entry.getValue()) {
+			        System.out.println(" - " + s.getName());
+			    }
+			}
+			
+			System.out.println();
 			
 			//Messages Implemented
 			startGame(databaseManager);

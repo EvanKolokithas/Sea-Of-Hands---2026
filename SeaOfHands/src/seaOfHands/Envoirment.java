@@ -12,8 +12,8 @@ public class Envoirment extends POI implements Lootable{
 	private List<Enemy> enemies = new ArrayList<>();
 	
 	//constructor
-	public Envoirment(String name, String desc, boolean camp, Inventory foragables) {
-		super(name, desc, camp);
+	public Envoirment(String name, String desc, boolean camp, int sanityLevel, Inventory foragables) {
+		super(name, desc, camp, sanityLevel);
 		
 		this.foragables = foragables;
 	}

@@ -29,3 +29,11 @@ Unit 4 a
 Unit 4.5
 
 1) implemented database for diplaying intro message and outro message
+
+Unit 5
+
+1) modified the world class to have array lists for all possible POIs, Items, & Monsters
+
+2) implemented comparable and comparator in structure class
+
+3) demenstrated comparator and comparable and tree map and tree show temporaraly in main
