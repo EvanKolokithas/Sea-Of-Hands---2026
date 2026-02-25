@@ -3,6 +3,8 @@ package seaOfHands;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import dataBase.DatabaseManager;
+
 //for date time project
 import java.time.LocalTime;
 import java.util.Locale;
@@ -62,10 +64,25 @@ public class Game {
 	public static void main(String[] args) {
 		
 		try {
-			log.debug("Hello World");
-			log.info("Hello World Again");
-			//Example Function
-			//startGame();
+			
+			
+			// initialize database
+			DatabaseManager databaseManager = new DatabaseManager();
+
+			// populate table
+			databaseManager.populateGameData();
+
+			
+			
+			//TODO log actual info
+			//log.debug("Hello World");
+			//log.info("Hello World Again");
+			
+			//Messages Implemented
+			startGame(databaseManager);
+			System.out.println("");
+			endGame(databaseManager);
+
 			
 			//gets the current time
 			LocalTime currentTime = LocalTime.now();
@@ -95,8 +112,21 @@ public class Game {
 	 * 
 	 * @throws Illegal State Exception
 	 */
-	public static void startGame() {
-		throw new IllegalStateException("Missing Configuration Files");
+	public static void startGame(DatabaseManager databaseManager) {
+		
+		// retrieve intro message
+		String introMessage = databaseManager.retrieveMessage("intro");
+
+		// print intro message
+		System.out.println(introMessage);
+	}
+	
+	public static void endGame(DatabaseManager databaseManager) {
+		// retrieve outro message
+				String outroMessage = databaseManager.retrieveMessage("outro");
+
+				// print outro message
+				System.out.println(outroMessage);
 	}
 	
 	//method to test dateTime

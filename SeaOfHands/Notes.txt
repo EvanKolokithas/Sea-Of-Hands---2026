@@ -26,3 +26,6 @@ Unit 4 a
 
 1) created messages properties based on time and utilized time in a tst message in game to showcase
 
+Unit 4.5
+
+1) implemented database for diplaying intro message and outro message
