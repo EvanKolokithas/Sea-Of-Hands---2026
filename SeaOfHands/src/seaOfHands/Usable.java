@@ -1,7 +1,7 @@
 package seaOfHands;
 
 public interface Usable {
-	//4 methods in this interface (Some are likly temporary)
+	//4 methods in this interface (Some are likely temporary)
 	
 	void use (Player player) throws Exception;
 	

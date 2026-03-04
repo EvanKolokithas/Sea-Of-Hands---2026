@@ -2,6 +2,11 @@ package seaOfHands;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.*;
+
+
+
+
 
 public class World {
 	
@@ -15,6 +20,7 @@ public class World {
 	private List<Envoirment> allEnvoirments;
 	private List<Item> allItems;
 	private List<Enemy> allEnemies;
+	
 	
 	
 	//constructor
@@ -39,7 +45,7 @@ public class World {
     	//sanity 1
     	allStructures.add(new Structure("Beach Cabin", "A small cabin with salted floorboards and messy rooms. You have lived here for as long as you remember; it's the closest thing you have to a home.", true, 1, true));
     	allStructures.add(new Structure("Firewatch Tower", "A tall and creaky tower traditionally used for spotting fires, clearly abandoned years ago.", false, 1, false));
-    	allStructures.add(new Structure("Abandoned House", "	A modest house with swollen doors and warped floorboards. Dust covers its walls, and plants sprout between holes in the floor.", false, 1, false));
+    	allStructures.add(new Structure("Abandoned House", "A modest house with swollen doors and warped floorboards. Dust covers its walls, and plants sprout between holes in the floor.", false, 1, false));
     	allStructures.add(new Structure("Campsite", "A cozy campsite with sleeping bags still set up around a small fire pit.", true, 1, false));
         
         //sanity 2
@@ -70,6 +76,28 @@ public class World {
     }
 	
     //TODO make random functions 
+  
+    	
+    //Predicate functional interface and Supplier 
+    	
+    public Structure getRandomStructure(int playerSanity) {
+
+        List<Structure> valid =
+                allStructures.stream()
+                             .filter(s -> s.getSanityLevel() <= playerSanity)
+                             .toList();
+
+        if (valid.isEmpty()) {
+        	System.out.println("Something went wrong");
+            return null;
+        }
+
+        return valid.get((int)(Math.random() * valid.size()));
+    }
+    	
+    	
+    	
+    	
     //random POI (based on Envoirment and Structure and sanity)
     //random Item (based on sanity)
     //random Enemy (based on sanity)

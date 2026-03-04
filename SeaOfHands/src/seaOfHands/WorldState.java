@@ -11,8 +11,7 @@ public class WorldState {
 	private int seaLevel;
 	private int seaSpeed;
 	
-	//controls what tiles can appear
-	private int sanity;
+
 	
 	
 	//constructor
@@ -22,7 +21,6 @@ public class WorldState {
 		tilesTraveled = 0;
 		seaLevel = 0;
 		seaSpeed = 1;
-		sanity = 1;
 	}
 	
 	public void advanceTurn() {
@@ -31,23 +29,31 @@ public class WorldState {
 		seaLevel += seaSpeed;
 	}
 	
+	public void incSeaSpeed() {
+		seaSpeed++;
+	}
+	
+	
+	public int getTurn() {
+		return turn;
+	}
+	
+	public void incTurn() {
+		turn ++;
+	}
+	
+	
+	//for ending conditions
+	
 	public int getSeaLevel() {
 		return seaLevel;
 	}
 	
-	public int getSanity() {
-		return sanity;
+	public int getTilesTraveled() {
+		return tilesTraveled;
 	}
+
 	
-	public void increaseSeaSpeed() {
-		seaSpeed++;
-	}
 	
-	public void increaseSanity() {
-		//sanity capped at 3
-		if(sanity != 3) {
-			sanity++;
-		}
-	}
 
 }

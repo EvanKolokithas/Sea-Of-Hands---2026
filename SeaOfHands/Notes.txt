@@ -37,3 +37,15 @@ Unit 5
 2) implemented comparable and comparator in structure class
 
 3) demenstrated comparator and comparable and tree map and tree show temporaraly in main
+
+Unit 6
+
+1) added the 5 functional interfaces
+
+2) outlined game loop in main
+
+3) completed random structure function using functional interfaces
+
+TODO 
+
+2) finish items and enimeis and enviorments list with random functions

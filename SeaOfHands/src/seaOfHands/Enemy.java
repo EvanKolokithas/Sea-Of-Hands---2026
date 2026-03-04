@@ -3,10 +3,12 @@ package seaOfHands;
 public class Enemy extends Entity implements Damagable, Damager {
 	
 	private int damage;
+	private String name;
 	
-	public Enemy(int health, int damage) {
+	public Enemy(String name, int health, int damage) {
 		super(health);
 		
+		this.name = name;
 		this.damage = damage;
 	}
 
@@ -18,16 +20,19 @@ public class Enemy extends Entity implements Damagable, Damager {
 
 	@Override
 	public void takeDamage(int damage) {
-		// TODO Auto-generated method stub
-		health -= damage;
+		health = Math.max(health - damage, 0);
 	}
 	
 	//getters
 	public int getHealth() {
-		return this.health;
+		return health;
 	}
 	
-	public int getDamage() {
-		return this.damage;
+	public int getDamage(){
+		return damage;
+	}
+	
+	public String getName() {
+		return name;
 	}
 }

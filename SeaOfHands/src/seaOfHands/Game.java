@@ -7,6 +7,7 @@ import dataBase.DatabaseManager;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -48,7 +49,7 @@ public class Game {
 		return instance;
 	}
 	
-	//gettersS
+	//getters
 	public World getWorld() {
 		return world;
 	}
@@ -75,100 +76,74 @@ public class Game {
 			databaseManager.populateGameData();
 
 			
+			//initial game loop
 			
-			//TODO log actual info
-			//log.debug("Hello World");
-			//log.info("Hello World Again");
-			
-			//tests for Unit 5
-			
-			// Sort alphabetically (natural order)
-			List<Structure> allStructures = world.getAllStructures();
-			
-			// Sort alphabetically using Comparable (natural order)
-			Collections.sort(allStructures);
-			System.out.println("Structures sorted alphabetically:");
-			for (Structure s : allStructures) {
-			    System.out.println(s.getName() + " (Sanity " + s.getSanityLevel() + ")");
-			}
-
-			// Sort by sanity using Comparator
-			allStructures.sort(Structure.SanityComparator);
-			System.out.println("\nStructures sorted by sanity:");
-			for (Structure s : allStructures) {
-			    System.out.println(s.getName() + " (Sanity " + s.getSanityLevel() + ")");
-			}
-			
-			
-			//store all structures in a treeset for demonstration
-			Set<String> structureNames = new TreeSet<>();
-			for (Structure s : allStructures) {
-			    structureNames.add(s.getName());
-			}
-			
-			System.out.println("\nDemonstrating a Set (tree set):");
-			for (String name : structureNames) {
-			    System.out.println(name);
-			}
-			
-			//store all structures along with their sanities in a treemap
-			Map<Integer, List<Structure>> structuresBySanity = new TreeMap<>();
-
-			for (Structure s : allStructures) {
-			    //get sanity
-				int sanity = s.getSanityLevel();
-			    
-				//creates a new array list for each sanity level
-			    structuresBySanity.putIfAbsent(sanity, new ArrayList<>());
-			    structuresBySanity.get(sanity).add(s);
-			}
-
-			
-			System.out.println("\nDemonstrating a Map (structures grouped by sanity):");
-			for (Map.Entry<Integer, List<Structure>> entry : structuresBySanity.entrySet()) {
-			    System.out.println("Sanity " + entry.getKey() + ":");
-			    for (Structure s : entry.getValue()) {
-			        System.out.println(" - " + s.getName());
-			    }
-			}
-			
-			System.out.println();
-			
-			//Messages Implemented
 			startGame(databaseManager);
-			System.out.println("");
-			endGame(databaseManager);
 
+			//Player created with default values
+			//TODO default constructor
+			Player player = new Player(10, 5, 1);
 			
-			//gets the current time
-			LocalTime currentTime = LocalTime.now();
-			Locale locale = Locale.getDefault();
+			//Turns at which sea speed increases.
+			int[] seaSpeedTurns = {10, 20, 30};
 			
-			testDateTime(currentTime, locale);
 			
-			testDateTime(LocalTime.of(6, 0), new Locale("en"));
+			boolean running = true;
 			
-			testDateTime(LocalTime.of(16, 0), new Locale("es"));
+			boolean endTurn = false;
 			
+			while(running) {
+				/*
+				 * Proccess
+				 * 
+				 * Take turn - while not end turn - player actions
+				 * 		perform actions - need combat loop to check for health
+				 * 
+				 * End turn - advance sea - check flooded condition
+				 * 
+				 * Reset:
+				 * 		Energy based on current tile campable
+				 * 		Sea speed based on tiles traveled
+				 * 		
+				 */
+				
+				//testing random structure method
+				Structure random =
+				        world.getRandomStructure(player.getSanity());
+				
+				
+				while(!endTurn) {
+					//TODO perform actions
+					System.out.println(random.getInfo() + "\n");
+					endTurn = true;
+					
+				}
+				
+				
+				endTurn(player, seaSpeedTurns);
+				running = floodCheck();
+				endTurn = false;
+			}
+			
+			//end of game
+			endGame(databaseManager);
 			
 			
 		}
 		catch(IllegalStateException e) {
+			//unsure what information to log for now
+			log.debug("Game failed to start: " + e);
 			System.out.println("Game failed to start: " + e);
 		}
 		finally{
+			log.debug("Game start attempt complete");
 			System.out.println("Game start attempt complete");
 		}
 		
 		
 	}
 	
-	/**
-	 * Throws and exception as an example to implement try catch functionality
-	 * 
-	 * @throws Illegal State Exception
-	 */
-	public static void startGame(DatabaseManager databaseManager) {
+	private static void startGame(DatabaseManager databaseManager) {
 		
 		// retrieve intro message
 		String introMessage = databaseManager.retrieveMessage("intro");
@@ -177,7 +152,52 @@ public class Game {
 		System.out.println(introMessage);
 	}
 	
-	public static void endGame(DatabaseManager databaseManager) {
+	private static boolean healthCheck(Player player) {
+		boolean running = true;
+			
+		//out of health
+		if(player.getHealth() < 0)
+			running = false;
+		
+		return running;
+	}
+
+	private static void endTurn(Player player, int[] seaSpeedTurn) {
+		
+		
+		//Energy 
+		
+		if(world.getPlayerLocation().canCamp()) {
+			//overloaded constructor
+			player.resetEnergy(6);
+		}
+		else {
+			//default constructor
+			player.resetEnergy();
+		}
+		
+		//Sea speed
+		
+		if(Arrays.stream(seaSpeedTurn).anyMatch(n -> n == worldState.getTurn())) {
+			worldState.incSeaSpeed();
+		}
+		
+		
+		
+		
+	}
+	
+	private static boolean floodCheck() {
+		boolean running = true;
+		
+		if(worldState.getTilesTraveled() <= worldState.getSeaLevel())
+			running = false;
+		
+		
+		return running;
+	}
+	
+	private static void endGame(DatabaseManager databaseManager) {
 		// retrieve outro message
 				String outroMessage = databaseManager.retrieveMessage("outro");
 
@@ -185,8 +205,8 @@ public class Game {
 				System.out.println(outroMessage);
 	}
 	
-	//method to test dateTime
-	public static void testDateTime(LocalTime time, Locale locale) {
+	
+	private static void testDateTime(LocalTime time, Locale locale) {
 		
 		//create a resourceBundle based on property files for language
 		ResourceBundle bundle = ResourceBundle.getBundle("SeaOfHands.messages", locale);
@@ -207,6 +227,76 @@ public class Game {
 		System.out.println("Current Time: " + time);
 		System.out.println(bundle.getString(messageKey));
 		
+	}
+	
+	private static void testUnit5() {
+		//tests for Unit 5
+		
+		 // Sort alphabetically (natural order)
+		List<Structure> allStructures = world.getAllStructures();
+		
+		// Sort alphabetically using Comparable (natural order)
+		Collections.sort(allStructures);
+		System.out.println("Structures sorted alphabetically:");
+		for (Structure s : allStructures) {
+		    System.out.println(s.getName() + " (Sanity " + s.getSanityLevel() + ")");
+		}
+
+		// Sort by sanity using Comparator
+		allStructures.sort(Structure.SanityComparator);
+		System.out.println("\nStructures sorted by sanity:");
+		for (Structure s : allStructures) {
+		    System.out.println(s.getName() + " (Sanity " + s.getSanityLevel() + ")");
+		}
+		
+		
+		//store all structures in a treeset for demonstration
+		Set<String> structureNames = new TreeSet<>();
+		for (Structure s : allStructures) {
+		    structureNames.add(s.getName());
+		}
+		
+		System.out.println("\nDemonstrating a Set (tree set):");
+		for (String name : structureNames) {
+		    System.out.println(name);
+		}
+		
+		//store all structures along with their sanities in a treemap
+		Map<Integer, List<Structure>> structuresBySanity = new TreeMap<>();
+
+		for (Structure s : allStructures) {
+		    //get sanity
+			int sanity = s.getSanityLevel();
+		    
+			//creates a new array list for each sanity level
+		    structuresBySanity.putIfAbsent(sanity, new ArrayList<>());
+		    structuresBySanity.get(sanity).add(s);
+		}
+
+		
+		System.out.println("\nDemonstrating a Map (structures grouped by sanity):");
+		for (Map.Entry<Integer, List<Structure>> entry : structuresBySanity.entrySet()) {
+		    System.out.println("Sanity " + entry.getKey() + ":");
+		    for (Structure s : entry.getValue()) {
+		        System.out.println(" - " + s.getName());
+		    }
+		}
+		
+		System.out.println();
+		
+
+	}
+	
+	private static void testTime() {
+		//gets the current time
+		LocalTime currentTime = LocalTime.now();
+		Locale locale = Locale.getDefault();
+		
+		testDateTime(currentTime, locale);
+		
+		testDateTime(LocalTime.of(6, 0), new Locale("en"));
+		
+		testDateTime(LocalTime.of(16, 0), new Locale("es"));
 	}
 }
 

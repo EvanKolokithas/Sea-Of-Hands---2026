@@ -6,13 +6,15 @@ public class Player extends Entity implements Damagable, Damager{
 	
 	private int energy;
 	private Inventory inv = new Inventory();
+	private int sanity;
 	
 	//constructor
 	
-	public Player(int health, int energy) {
+	public Player(int health, int energy, int sanity) {
 		super(health);
 		
 		this.energy = energy;
+		this.sanity = sanity;
 	}
 
 	//Methods
@@ -37,4 +39,29 @@ public class Player extends Entity implements Damagable, Damager{
 		return this.energy;
 	}
 	
+	public int getSanity() {
+		return this.sanity;
+	}
+	
+	public void incSanity() {
+		sanity ++;
+	}
+	
+	//health
+	//TODO healable interface?
+	
+	public void setHealth(int health) {
+	    this.health = health;
+	}
+	
+	
+	//reset energy
+	
+	public void resetEnergy() {
+		energy = 5;
+	}
+	
+	public void resetEnergy(int energy) {
+		this.energy = energy;
+	}
 }
