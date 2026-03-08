@@ -3,19 +3,19 @@ package seaOfHands;
 import java.util.List;
 import java.util.ArrayList;
 
-public class Envoirment extends POI implements Lootable{
+public class Environment extends POI implements Lootable{
 
 	//Envoirments are POIs that are not lootable but explorable and have enemies.
 	
 	//vars
-	private Inventory foragables;
+	private boolean foragable;
 	private List<Enemy> enemies = new ArrayList<>();
 	
 	//constructor
-	public Envoirment(String name, String desc, boolean camp, int sanityLevel, Inventory foragables) {
+	public Environment(String name, String desc, boolean camp, int sanityLevel, boolean foragable) {
 		super(name, desc, camp, sanityLevel);
 		
-		this.foragables = foragables;
+		this.foragable = foragable;
 	}
 	
 	//methods

@@ -1,4 +1,6 @@
-package seaOfHands;
+package Commands;
+
+import seaOfHands.Game;
 
 public interface Command {
 	//represents one complete player action

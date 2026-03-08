@@ -1,4 +1,4 @@
-package seaOfHands;
+package Commands;
 
 public class CommandParser {
 

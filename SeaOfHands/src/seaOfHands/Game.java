@@ -82,10 +82,13 @@ public class Game {
 
 			//Player created with default values
 			//TODO default constructor
+			
+			// Health | Energy | Sanity
 			Player player = new Player(10, 5, 1);
 			
 			//Turns at which sea speed increases.
-			int[] seaSpeedTurns = {10, 20, 30};
+			final int[] seaSpeedTurns = {10, 20, 30};
+			final int[] sanityTurns = {3, 7};
 			
 			
 			boolean running = true;
@@ -107,21 +110,27 @@ public class Game {
 				 * 		
 				 */
 				
-				//testing random structure method
-				Structure random =
-				        world.getRandomStructure(player.getSanity());
+				
+				
 				
 				
 				while(!endTurn) {
 					//TODO perform actions
-					System.out.println(random.getInfo() + "\n");
+					
+					//gets list of choices (should be in travel command function
+					List<POI> choices = world.getRandomPOIs((int)(Math.random() * 2) + 2, player.getSanity());
+					printChoices(choices);
+					
+					System.out.println();
+					
 					endTurn = true;
 					
 				}
 				
 				
-				endTurn(player, seaSpeedTurns);
-				running = floodCheck();
+				endTurn(player, seaSpeedTurns, sanityTurns);
+				//running = floodCheck();
+				running = false;
 				endTurn = false;
 			}
 			
@@ -162,7 +171,7 @@ public class Game {
 		return running;
 	}
 
-	private static void endTurn(Player player, int[] seaSpeedTurn) {
+	private static void endTurn(Player player, int[] seaSpeedTurn, int[] sanityTurns) {
 		
 		
 		//Energy 
@@ -182,8 +191,15 @@ public class Game {
 			worldState.incSeaSpeed();
 		}
 		
+		//Sanity
 		
+		if(Arrays.stream(sanityTurns).anyMatch(n -> n == worldState.getTurn())) {
+			player.incSanity();
+		}
 		
+		//Turn
+		
+		worldState.incTurn();
 		
 	}
 	
@@ -203,6 +219,11 @@ public class Game {
 
 				// print outro message
 				System.out.println(outroMessage);
+				
+				//print stats
+				System.out.println("Turns: " + worldState.getTurn());
+				System.out.println("Tiles: " + worldState.getTilesTraveled());
+				System.out.println("Sea Level " + worldState.getSeaLevel());
 	}
 	
 	
@@ -297,6 +318,13 @@ public class Game {
 		testDateTime(LocalTime.of(6, 0), new Locale("en"));
 		
 		testDateTime(LocalTime.of(16, 0), new Locale("es"));
+	}
+	
+	private static void printChoices(List<POI> choices) {
+		System.out.println("There are " + choices.size() + " paths ahead of you:");
+		for(int i = 0; i < choices.size(); i++) {
+			System.out.println("\tPath " + (i + 1) + " leads to a " + choices.get(i).getName() + ".");
+		}
 	}
 }
 

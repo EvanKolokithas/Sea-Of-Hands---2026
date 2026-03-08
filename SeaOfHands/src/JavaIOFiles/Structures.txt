@@ -1,0 +1,14 @@
+Beach House| A small cabin with salted floorboards and messy rooms. You have lived here for as long as you remember; it's the closest thing you have to a home.| false| 1| false
+Firewatch Tower| A tall and creaky tower traditionally used for spotting fires, clearly abandoned years ago.| false| 1| false
+Abandoned House| A modest house with swollen doors and warped floorboards. Dust covers its walls, and plants sprout between holes in the floor.| false| 1| false
+Campsite| A cozy campsite with sleeping bags still set up around a small fire pit.| true| 1| false
+
+Cliffside Church| The church rests on the edge of the cliff as if it's going to fall at any moment. Despite seeming abandoned, its candles remain burning.| false| 2| false
+Ruined Tower| A large stone tower broken at the top. You don't remember seeing any stone buildings near the coast.| false| 2| false
+Burned Down Trading Post| The shelves are bare, and debris is scattered across the floor, scattered. Ash fills the air, making it hard to adjust your breathing.| false| 2| false
+Sunken Inn| An old, almost antique-looking inn, half of it buried in the ground as if the ground fell below it before swallowing it up.| true| 2| false
+
+Deserted Castle Hall| A great stone hall that stretches for what seems forever. Everything about it is pristine, marble floors, stained glass windows, and torches lining the walls.| false| 3| false
+Inland Lighthouse| A lonely lighthouse, standing proudly in solitude as it waits to guide ships that will never come. You worry some could come soon.| false| 3| false
+Familiar Cabin| A small cabin with salted floorboards and messy rooms. The sight of it feels strangely familiar, but more than anything, you recognize the smell.| true| 3| true
+Quarantined House| Windows sealed, and doors boarded from the inside. A bell hangs outside the house, it rope cut.| false| 3| false

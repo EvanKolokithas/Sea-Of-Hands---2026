@@ -1,8 +1,12 @@
 package seaOfHands;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.*;
+import java.util.stream.Collectors;
 
 
 
@@ -15,11 +19,15 @@ public class World {
 	//vars
 	
 	private POI playerLocation;
+	private final POI startingLocation;
 	
 	private List<Structure> allStructures;
-	private List<Envoirment> allEnvoirments;
-	private List<Item> allItems;
+	private List<Environment> allEnviorments;
 	private List<Enemy> allEnemies;
+	private List<Consumable> allConsumables;
+	private List<Tool> allTools;
+	private List <Weapon> allWeapons;
+
 	
 	
 	
@@ -27,48 +35,126 @@ public class World {
 	public World() {
 		// initialize collections
 		allStructures = new ArrayList<>();
-		allEnvoirments = new ArrayList<>();
-        allItems = new ArrayList<>();
+		allEnviorments = new ArrayList<>();
+        allWeapons = new ArrayList<>();
         allEnemies = new ArrayList<>();
+        allTools = new ArrayList<>();
         
-		// populate collections with hardcoded values
+		// populate collections with values from javaIO files
         initializePOIs();
         initializeItems();
         initializeEnemies();
         
 		playerLocation = allStructures.getFirst();
+		startingLocation = allStructures.getFirst();
 	}
 	
     private void initializePOIs() {
     	//structures (12) raidable and campable auto set to false and randomized when initialized later unless always true
     	
-    	//sanity 1
-    	allStructures.add(new Structure("Beach Cabin", "A small cabin with salted floorboards and messy rooms. You have lived here for as long as you remember; it's the closest thing you have to a home.", true, 1, true));
-    	allStructures.add(new Structure("Firewatch Tower", "A tall and creaky tower traditionally used for spotting fires, clearly abandoned years ago.", false, 1, false));
-    	allStructures.add(new Structure("Abandoned House", "A modest house with swollen doors and warped floorboards. Dust covers its walls, and plants sprout between holes in the floor.", false, 1, false));
-    	allStructures.add(new Structure("Campsite", "A cozy campsite with sleeping bags still set up around a small fire pit.", true, 1, false));
-        
-        //sanity 2
-    	allStructures.add(new Structure("Cliffside Church", "The church rests on the edge of the cliff as if it's going to fall at any moment. Despite seeming abandoned, its candles remain burning.", false, 2, false));
-    	allStructures.add(new Structure("Ruined Tower", "A large stone tower broken at the top. You don't remember seeing any stone buildings near the coast.", false, 2, false));
-    	allStructures.add(new Structure("Burned Down Trading Post", "The shelves are bare, and debris is scattered across the floor, scattered. Ash fills the air, making it hard to adjust your breathing.", false, 2, false));
-    	allStructures.add(new Structure("Sunken Inn", "An old, almost antique-looking inn, half of it buried in the ground as if the ground fell below it before swallowing it up.", true, 2, false));
-        
-        //sanity 3
-    	allStructures.add(new Structure("Deserted Castle Hall ", "A great stone hall that stretches for what seems forever. Everything about it is pristine, marble floors, stained glass windows, and torches lining the walls.", false, 3, false));
-    	allStructures.add(new Structure("Inland Lighthouse", "A lonely lighthouse, standing proudly in solitude as it waits to guide ships that will never come. You worry some could come soon.", false, 3, false));
-    	allStructures.add(new Structure("Familiar Cabin", "A small cabin with salted floorboards and messy rooms. The sight of it feels strangely familiar, but more than anything, you recognize the smell.", true, 3, true));
-    	allStructures.add(new Structure("Quarantined House", "Windows sealed, and doors boarded from the inside. A bell hangs outside the house, its rope cut.", false, 3, false));
-        
+    	//name | desc | camp | sanity| raid ; where camp and raid are only set to true if always true
+    	
+    	allStructures = initializeStructures();
         
         //enviorments
     	//TODO add all enviorments
+    	
+    	allEnviorments = initailizeEnviorments();
+        
         
         
     }
+    
+    public static List<Structure> initializeStructures() {
 
+        List<Structure> structures = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(".\\src\\JavaIOFiles\\Structures.txt"))) {
+
+            String line;
+            
+            while ((line = reader.readLine()) != null) {
+
+                if (line.trim().isEmpty()) continue;
+
+                String[] data = line.split("\\|");
+                	
+                
+                String name = data[0].trim();
+                String description = data[1].trim();
+                boolean camp = Boolean.parseBoolean(data[2].trim());
+                int sanityTier = Integer.parseInt(data[3].trim());
+                boolean raid = Boolean.parseBoolean(data[4].trim());
+
+                structures.add(new Structure(name, description, camp, sanityTier, raid));
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return structures;
+    }
+
+    public static List<Environment> initailizeEnviorments() {
+
+        List<Environment> enviorments = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(".\\src\\JavaIOFiles\\Enviorments.txt"))) {
+
+            String line;
+            
+            while ((line = reader.readLine()) != null) {
+
+                if (line.trim().isEmpty()) continue;
+
+                String[] data = line.split("\\|");
+                	
+                
+                String name = data[0].trim();
+                String description = data[1].trim();
+                boolean camp = Boolean.parseBoolean(data[2].trim());
+                int sanityTier = Integer.parseInt(data[3].trim());
+                boolean forage = Boolean.parseBoolean(data[4].trim());
+
+                enviorments.add(new Environment(name, description, camp, sanityTier, forage));
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return enviorments;
+    }
+    
     private void initializeItems() {
         //TODO add all Items
+    	
+    	//Consumables #
+    	
+    	//sanity 1
+    	
+    	//sanity 2
+    	
+    	//sanity 3
+    	
+    	
+    	//Tools #
+    	
+    	//sanity 1
+    	
+    	//sanity 2
+    	
+    	//sanity 3
+    	
+    	//Weapons #
+    	
+    	//sanity 1
+    	
+    	//sanity 2
+    	
+    	//sanity 3
+    	
     }
 
     private void initializeEnemies() {
@@ -80,24 +166,69 @@ public class World {
     	
     //Predicate functional interface and Supplier 
     	
-    public Structure getRandomStructure(int playerSanity) {
+    public <T extends POI> T getRandomPOI(List<T> allPOIs) {
 
-        List<Structure> valid =
-                allStructures.stream()
-                             .filter(s -> s.getSanityLevel() <= playerSanity)
-                             .toList();
-
-        if (valid.isEmpty()) {
-        	System.out.println("Something went wrong");
+    	if (allPOIs.isEmpty()) {
+    		System.out.println("allPOIs is empty");
             return null;
+            
+        }
+    	
+        int index = (int) (Math.random() * allPOIs.size());
+        return allPOIs.get(index);
+    }
+    
+    /**
+     * Gets a list of n random POIs with the max of 1 structure
+     * 
+     * @param n
+     * @param playerSanity
+     * @param current
+     * 
+     * @return
+     */
+    public List<POI> getRandomPOIs(int n, int playerSanity) {
+
+        List<POI> choices = new ArrayList<>();
+        boolean hasStructure = playerLocation instanceof Structure;
+        
+        List<Environment> availableEnvs = allEnviorments.stream()
+                .filter(e -> e != playerLocation && e != startingLocation)
+                .filter(e -> e.getSanityLevel() <= playerSanity && e.getSanityLevel() >= playerSanity - 1)
+                .collect(Collectors.toList());
+
+        List<Structure> availableStructures = allStructures.stream()
+                .filter(s -> s != playerLocation && s != startingLocation)
+                .filter(s -> s.getSanityLevel() <= playerSanity && s.getSanityLevel() >= playerSanity - 1)
+                .collect(Collectors.toList());
+        
+        
+        for (int i = 0; i < n; i++) {
+
+            boolean chooseStructure = false;
+
+            if (!hasStructure && !availableStructures.isEmpty()) {
+                chooseStructure = Math.random() < 0.2;
+            }
+
+            if (chooseStructure && !availableStructures.isEmpty()) {
+                Structure st = getRandomPOI(availableStructures);
+                choices.add(st);
+                availableStructures.remove(st);
+                hasStructure = true;
+            } else if (!availableEnvs.isEmpty()) {
+                Environment env = getRandomPOI(availableEnvs);
+                choices.add(env);
+                availableEnvs.remove(env);
+            } else {
+                // no more valid POIs, stop early
+                break;
+            }
         }
 
-        return valid.get((int)(Math.random() * valid.size()));
+        return choices;
     }
-    	
-    	
-    	
-    	
+  
     //random POI (based on Envoirment and Structure and sanity)
     //random Item (based on sanity)
     //random Enemy (based on sanity)
@@ -111,13 +242,19 @@ public class World {
 	public List<Structure> getAllStructures() {
 		return allStructures; 
 	}
-	public List<Envoirment> getAllEnvoirments() {
-		return allEnvoirments; 
+	public List<Environment> getAllEnvoirments() {
+		return allEnviorments; 
 	}
 	
 	
-    public List<Item> getAllItems() {
-    	return allItems; 
+    public List<Weapon> getAllWeapons() {
+    	return allWeapons; 
+    }
+    public List<Consumable> getAllConsumables() {
+    	return allConsumables; 
+    }
+    public List<Tool> getAllTools() {
+    	return allTools; 
     }
     
     public List<Enemy> getAllEnemies() {
