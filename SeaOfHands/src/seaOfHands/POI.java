@@ -6,15 +6,17 @@ public abstract class POI {
     protected final String name;
     protected final String desc;
     protected final int sanityLevel;
-    protected boolean camp;
+    protected boolean canCamp;
     protected boolean lootable;
     protected boolean used = false;
+    protected boolean hasCamp = false;
+
     
     // constructor
     protected POI(String name, String desc, boolean camp, boolean lootable, int sanityLevel) {
         this.name = name;
         this.desc = desc;
-        this.camp = camp;
+        this.canCamp = camp;
         this.lootable = lootable;
         this.sanityLevel = sanityLevel;
     }
@@ -25,7 +27,7 @@ public abstract class POI {
     }
     
     public boolean canCamp() { 
-    	return camp; 
+    	return canCamp; 
     }
     
     public int getSanityLevel() { 
@@ -37,7 +39,11 @@ public abstract class POI {
     }
     
     public void setUpCamp() { 
-    	camp = true; 
+    	hasCamp = true; 
+    }
+    
+    public boolean getHasCamp() {
+		return hasCamp;
     }
     
     public boolean isUsed() { 
@@ -50,16 +56,10 @@ public abstract class POI {
     public boolean isLootable() { 
     	return lootable && !used; 
     }
-
+    
     /** Called when player arrives; chance to set lootable or campable */
     public void onArrival() {
-        // 20% chance to become campable
-        if (!camp && Math.random() < 0.2) camp = true;
-
-        // 30% chance to become not lootable
-        lootable = Math.random() >= 0.3;
-
-        // mark as unused again if needed (for loot tracking)
-        used = false;
+    	
     }
-}
+
+	}

@@ -2,6 +2,7 @@ package commands;
 
 import seaOfHands.Game;
 import seaOfHands.Player;
+import seaOfHands.UI;
 import seaOfHands.World;
 import seaOfHands.WorldState;
 
@@ -12,7 +13,7 @@ public class EndTurnCommand implements Command {
     public void execute(String[] args, Player player, World world, WorldState worldState) {
     	Game.endTurn(player); // call your existing endTurn logic
     	if(Game.isRunning()) {
-    		Game.printStatus(player);
+    		UI.printStatus(player, world, worldState);
     	}
     }
 

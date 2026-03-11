@@ -1,5 +1,7 @@
 package commands;
 
+import seaOfHands.Enemy;
+import seaOfHands.Environment;
 import seaOfHands.Game;
 import seaOfHands.World;
 import seaOfHands.WorldState;
@@ -21,6 +23,10 @@ public class MoveCommand implements Command {
 
         Game game = Game.getInstance();
         World world = game.getWorld();
+        if(worldState.inCombat() || worldState.getEnemy() != null) {
+            System.out.println("An enemy blocks your path!");
+            return;
+        }
         
         if(player.getEnergy() <= 0){
         	System.out.println("You do not have enough energy to move");
@@ -37,26 +43,40 @@ public class MoveCommand implements Command {
         // ask player for choice
         System.out.print("Choose a path: ");
         Scanner scanner = new Scanner(System.in);
-        int selection = scanner.nextInt();
+		int selection = scanner.nextInt();
 
-        // validate choice
-        if(selection < 1 || selection > choices.size()) {
-            System.out.println("Invalid path.");
-            return;
+		// validate choice
+		if(selection < 1 || selection > choices.size()) {
+			   System.out.println("Invalid path.");
+			   return;
+		}
+
+		POI destination = choices.get(selection - 1);
+			
+		// inc player data
+		player.useEnergy();
+		worldState.incTilesTraveled();
+
+		// set up loot and campability
+		destination.onArrival();
+			
+		// move player
+		world.setPlayerLocation(destination, player);
+		
+        //spawn enemy
+        if(destination instanceof Environment && Math.random() < 0.35) {
+        	
+            Enemy enemy = world.generateEnemy(player.getSanity());
+
+            worldState.setEnemy(enemy);
+
+            System.out.println("Something emerges from the tide...");
+            System.out.println("\nEnenmy:\n " + enemy.getName());
+            System.out.println();
+
         }
-
-        POI destination = choices.get(selection - 1);
-
-        // inc player data
-        player.useEnergy();
-        worldState.incTilesTraveled();
-
         
-        // move player
-        world.setPlayerLocation(destination, player);
         
-        // set up loot
-        destination.onArrival();
     }
 
 	@Override

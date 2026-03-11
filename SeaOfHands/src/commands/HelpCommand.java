@@ -17,10 +17,19 @@ public class HelpCommand implements Command {
     public void execute(String[] args, Player player, World world, WorldState worldState) {
         if (args.length == 1) {
             // no extra args: list all commands
-            System.out.println("Available commands:");
-            for (String cmdName : manager.getCommandNames()) {
-                System.out.println(" - " + cmdName);
-            }
+        	System.out.println("===== COMMANDS =====");
+
+        	int count = 0;
+        	for (String command : manager.getCommandNames()) {
+        	    System.out.printf("%-12s", command);// 12 chars left aligned
+        	    count++;
+
+        	    if (count % 4 == 0) {
+        	        System.out.println();
+        	    }
+        	}
+
+        	System.out.println("\n====================");
             System.out.println("Type 'help <command>' for more details about a specific command.");
         } else {
             // show help for a specific command

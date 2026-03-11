@@ -1,15 +1,15 @@
-Rhythmic Beach|The tide crashes into the shore, its foamy and swollen fingertips repeatedly grasping to reach you.|false|1|false
-Misty Meadow|The fog is dense and oppressing, blocking out your vision, though something tells you that you must continue forward.|false|1|false
-Deep Pond|Light beams down on the water, mirroring your figure back at you, but failing to truly hide the depths of its body. You don't want to look at your reflection.|false|1|false
-Small Forest|The trees speak volumes in their silence, gilding your path with their limbs. You wish not to disturb their rest.|false|1|false
-Flowering Plateau|The air is sweet with pollen, and petals dance with the wind around you.|false|1|false
-Jagged Cliff|The cliffs rise abruptly from the ground, their jagged edges slicing through the sky. Wind howls through crevices, and distant gulls circle in uneasy patterns.|false|2|false
-Overgrown Trail|Dirt trails grow and branch incessantly, masking themselves in moss and foliage, desperately trying to remain unknown.|false|2|false
-Misty Swamp|The waterlogged ground squelches beneath your feet, and thin mist curls over the surface. Branches reach low, and the scent of rot lingers faintly in the air.|false|2|false
-Ancient Ruins|Remnants of large stone structures lay scattered across the ground, a graveyard of what may have been homes to some.|false|2|false
-Dense Pine Forest|Tall pines stretch into the clouds, their needles forming a thick canopy. Light barely reaches the forest floor, and each step echoes through the quiet woods.|false|2|false
-Flooded City|The water is still and murky, reaching up to the heads of the buildings but encapsulating the rest of their bodies. Only the rooftops remain for you to walk on.|false|3|false
-Remote Bayou|Tangled roots rise from slow, dark waters, and the air smells of wet earth and decay. Mist drifts low over the channels, hiding the twists and turns ahead.|false|3|false
-Hand Fields|A large field of tall grass, swaying as you move past it, and reaching back towards you after you pass. Each grass has five small flowers, each flower with five petals.|false|3|false
-Desert Hills|Nothing is here for you, not anymore. Everything has been ground up over the span of millions of years by millions of hands into endless grains of sand.|false|3|false
-Frozen Tundra|The trees can't help but shiver, covered in blankets of snow and armored with layers of ice. Your body's going numb, but you're too petrified to stop advancing.|false|3|false
+Rhythmic Beach|The tide crashes into the shore, its foamy and swollen fingertips repeatedly grasping to reach you.|false|1|true
+Misty Meadow|The fog is dense and oppressing, blocking out your vision, though something tells you that you must continue forward.|false|1|true
+Deep Pond|Light beams down on the water, mirroring your figure back at you, but failing to truly hide the depths of its body. You don't want to look at your reflection.|false|1|true
+Small Forest|The trees speak volumes in their silence, gilding your path with their limbs. You wish not to disturb their rest.|false|1|true
+Flowering Plateau|The air is sweet with pollen, and petals dance with the wind around you.|false|1|true
+Jagged Cliff|The cliffs rise abruptly from the ground, their jagged edges slicing through the sky. Wind howls through crevices, and distant gulls circle in uneasy patterns.|false|2|true
+Overgrown Trail|Dirt trails grow and branch incessantly, masking themselves in moss and foliage, desperately trying to remain unknown.|false|2|true
+Misty Swamp|The waterlogged ground squelches beneath your feet, and thin mist curls over the surface. Branches reach low, and the scent of rot lingers faintly in the air.|false|2|true
+Ancient Ruins|Remnants of large stone structures lay scattered across the ground, a graveyard of what may have been homes to some.|false|2|true
+Dense Pine Forest|Tall pines stretch into the clouds, their needles forming a thick canopy. Light barely reaches the forest floor, and each step echoes through the quiet woods.|false|2|true
+Flooded City|The water is still and murky, reaching up to the heads of the buildings but encapsulating the rest of their bodies. Only the rooftops remain for you to walk on.|false|3|true
+Remote Bayou|Tangled roots rise from slow, dark waters, and the air smells of wet earth and decay. Mist drifts low over the channels, hiding the twists and turns ahead.|false|3|true
+Hand Fields|A large field of tall grass, swaying as you move past it, and reaching back towards you after you pass. Each grass has five small flowers, each flower with five petals.|false|3|true
+Desert Hills|Nothing is here for you, not anymore. Everything has been ground up over the span of millions of years by millions of hands into endless grains of sand.|false|3|true
+Frozen Tundra|The trees can't help but shiver, covered in blankets of snow and armored with layers of ice. Your body's going numb, but you're too petrified to stop advancing.|false|3|true

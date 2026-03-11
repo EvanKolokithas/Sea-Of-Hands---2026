@@ -57,7 +57,7 @@ public class DiscardCommand implements Command {
             System.out.println((i + 1) + ". " + item.getName());
         }
 
-        try (Scanner scanner = new Scanner(System.in)) {
+        Scanner scanner = new Scanner(System.in); 
 			int choice = -1;
 
 			while (choice < 1 || choice > inventory.getItems().size()) {
@@ -73,7 +73,7 @@ public class DiscardCommand implements Command {
 			Item removed = inventory.getItems().get(choice - 1);
 			inventory.remove(removed);
 			System.out.println("You discarded " + removed.getName() + ".");
-		}
+		
         return true;
     }
     

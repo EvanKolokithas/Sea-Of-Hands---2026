@@ -23,7 +23,7 @@ public class World {
 	
 	private List<Structure> allStructures;
 	private List<Environment> allEnviorments;
-	private List<Enemy> allEnemies;
+	private List<String> allEnemies;
 	private static List<Consumable> allConsumables;
 	private static List <Weapon> allWeapons;
 
@@ -42,7 +42,7 @@ public class World {
         
 		// populate collections with values from javaIO files
         initializeItems();
-        //initializeEnemies();
+        allEnemies = initailizeEnemies();
         initializePOIs();
         
         
@@ -61,7 +61,7 @@ public class World {
     	
     	//name | desc | damage | breakChance | sanity ;
     	
-    	allWeapons = initializeWeapons();
+    	allWeapons = initailizeWeapons();
     }
 	
     private void initializePOIs() {
@@ -163,7 +163,7 @@ public class World {
                 int healthRestore = Integer.parseInt(data[2].trim());
                 int energyRestore = Integer.parseInt(data[3].trim());
                 int sanity = Integer.parseInt(data[4].trim());
-                consumables.add(new Consumable(name, description, healthRestore, energyRestore, sanity));
+                consumables.add(new Consumable(name, description, sanity, healthRestore, energyRestore));
             }
 
         } catch (IOException e) {
@@ -174,7 +174,7 @@ public class World {
     	
     }
     
-    private static List<Weapon> initializeWeapons(){
+    private static List<Weapon> initailizeWeapons(){
     	List<Weapon> weapons = new ArrayList<>();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(".\\src\\JavaIOFiles\\Weapons.txt"))) {
@@ -203,11 +203,28 @@ public class World {
         return weapons;
     }
 
-    private void initializeEnemies() {
-        //TODO add all Enemies
+    private static List<String> initailizeEnemies() {
+    	List<String> enemies = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(".\\src\\JavaIOFiles\\Tide.txt"))) {
+
+            String line;
+            
+            while ((line = reader.readLine()) != null) {
+
+                if (line.trim().isEmpty()) continue;
+                	
+                
+                String name = line.trim();
+                enemies.add(name);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        return enemies;
     }
-	
-    //TODO make random functions 
   
     	
     //Predicate functional interface and Supplier 
@@ -274,11 +291,41 @@ public class World {
 
         return choices;
     }
-  
-    //random POI (based on Envoirment and Structure and sanity)
-    //random Item (based on sanity)
-    //random Enemy (based on sanity)
     
+    public String getRandomEnemyName() {
+
+        int index = (int)(Math.random() * allEnemies.size());
+
+        return allEnemies.get(index);
+    }
+    
+    public Enemy generateEnemy(int sanityLevel) {
+
+        String name = getRandomEnemyName();
+
+        int health;
+        int damage;
+
+        switch(sanityLevel) {
+
+            case 1:
+                health = 6 + (int)(Math.random()*5);
+                damage = 1 + (int)(Math.random()*2);
+                break;
+
+            case 2:
+                health = 10 + (int)(Math.random()*7);
+                damage = 2 + (int)(Math.random()*3);
+                break;
+
+            default:
+                health = 16 + (int)(Math.random()*9);
+                damage = 3 + (int)(Math.random()*4);
+                break;
+        }
+
+        return new Enemy(name, health, damage);
+    }
     
     //getters
 	public POI getPlayerLocation() {
@@ -290,8 +337,9 @@ public class World {
 
 	    System.out.println("You arrive at the " + poi.getName());
 
-	    Game.getInstance().printStatus(player);
+	    UI.printStatus(player, this, Game.getWorldState());
 	}
+	
 	public List<Structure> getAllStructures() {
 		return allStructures; 
 	}
@@ -306,7 +354,7 @@ public class World {
     	return allConsumables; 
     }
     
-    public List<Enemy> getAllEnemies() {
+    public List<String> getAllEnemies() {
     	return allEnemies; 
     }
 }

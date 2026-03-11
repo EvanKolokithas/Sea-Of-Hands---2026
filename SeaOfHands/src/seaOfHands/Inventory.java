@@ -1,7 +1,10 @@
 package seaOfHands;
 
 import java.util.List;
+import java.util.Map;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class Inventory {
 
@@ -41,14 +44,6 @@ public class Inventory {
     }
 
     public void printInventory() {
-        System.out.println("----- Inventory (" + items.size() + "/" + maxItems + ") -----");
-        if (items.isEmpty()) {
-            System.out.println("Empty");
-        } else {
-            for (Item item : items) {
-                System.out.println("- " + item.getName());
-            }
-        }
-        System.out.println("----------------------");
+        UI.printInventory(items);
     }
 }

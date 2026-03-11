@@ -11,5 +11,5 @@ public abstract class Entity {
 	protected Entity(int health) {
 		this.health = health;
 	}
-
+	
 }

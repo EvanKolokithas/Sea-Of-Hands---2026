@@ -26,6 +26,13 @@ public class Weapon extends Item implements Usable {
 		return breakChance;
 	}
 	
+	
+	
+	@Override
+	public String getInfo() {
+		return name + " : " + desc + "\nDamage " + damage + " : Break Chance " + (breakChance * 100) + "%";
+	}
+
 	@Override
 	public void use(Player player) throws Exception {
 		// TODO Auto-generated method stub

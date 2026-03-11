@@ -23,9 +23,9 @@ public class Structure extends POI {
         	lootable = Math.random() <= 0.7;
         }
             
-        if (!camp) {
+        if (!canCamp) {
         	// 20% chance to become campable
-        	camp = Math.random() <= 0.2;
+        	canCamp = Math.random() <= 0.7;
         }
 
         used = false;
@@ -49,6 +49,6 @@ public class Structure extends POI {
 
     @Override
     public String getInfo() {
-        return name + " : " + desc + " | Campable: " + camp + " | Lootable: " + lootable;
+        return name + " : " + desc + " | Campable: " + canCamp + " | Has Camp " + hasCamp + " | Lootable: " + lootable;
     }
 }

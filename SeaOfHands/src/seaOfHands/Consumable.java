@@ -27,7 +27,12 @@ public class Consumable extends Item implements Usable {
 	public int getEnergyRestore() {
 		return energyRestore;
 	}
-
+	
+	@Override
+	public String getInfo() {
+		return name + " : " + desc + "\nHealth " + healthRestore + " : Energy " + energyRestore;
+	}
+	
 	@Override
 	public void use(Player player) throws Exception {
 		// TODO Auto-generated method stub

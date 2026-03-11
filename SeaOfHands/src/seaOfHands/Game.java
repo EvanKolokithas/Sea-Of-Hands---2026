@@ -3,15 +3,20 @@ package seaOfHands;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import commands.CampCommand;
+import commands.CombatCommand;
 import commands.CommandManager;
 import commands.DiscardCommand;
 import commands.EndTurnCommand;
+import commands.EquipCommand;
 import commands.ForageCommand;
 import commands.HelpCommand;
+import commands.InfoCommand;
 import commands.InventoryCommand;
 import commands.LootCommand;
 import commands.MoveCommand;
 import commands.StatusCommand;
+import commands.UseCommand;
 import dataBase.DatabaseManager;
 
 import java.time.LocalTime;
@@ -28,16 +33,11 @@ import java.util.TreeMap;
 import java.util.Set;
 import java.util.TreeSet;
 
-
-
-
-
 /**
  * Main Class for the game
  * Singleton Pattern:
  * 
  * Only one instance of the game will be created as well as for world and worldState so
- * singleton pattern works well
  * 
  * @author Evan
  */
@@ -88,11 +88,11 @@ public class Game {
 		manager.register(new DiscardCommand());
 		manager.register(new LootCommand());
 		manager.register(new ForageCommand());
-		
-		//TODO commands
-		//use item
-		//info item
-		//camp
+		manager.register(new CampCommand());
+		manager.register(new InfoCommand());
+		manager.register(new EquipCommand());
+		manager.register(new CombatCommand(new Scanner(System.in)));
+		manager.register(new UseCommand());
 		
 		
 		//try with resources
@@ -115,7 +115,8 @@ public class Game {
 			
 			// Health | Energy | Sanity
 			Player player = new Player(10, 5, 1);
-			printStatus(player);	
+			UI.printStatus(player, world, worldState);	
+			manager.executeCommand("help", player, world, worldState);
 			
 			while(running) {
 				/*
@@ -146,11 +147,9 @@ public class Game {
 		catch(IllegalStateException e) {
 			//unsure what information to log for now
 			log.debug("Game failed to start: " + e);
-			System.out.println("Game failed to start: " + e);
 		}
 		finally{
 			log.debug("Game start attempt complete");
-			System.out.println("Game start attempt complete");
 		}
 		
 		
@@ -179,7 +178,7 @@ public class Game {
 				
 		//Energy 
 		
-		if(world.getPlayerLocation().canCamp()) {
+		if(world.getPlayerLocation().getHasCamp()) {
 			//overloaded constructor
 			player.resetEnergy(6);
 		}
@@ -202,7 +201,7 @@ public class Game {
 		
 		//Turn
 		
-		worldState.incTurn();
+		worldState.advanceTurn();
 		
 		running = floodCheck() && healthCheck(player);
 		
@@ -226,7 +225,7 @@ public class Game {
 				System.out.println(outroMessage);
 				
 				//print stats
-				printStatus(player);
+				UI.printStatus(player, world, worldState);
 	}
 	
 	public static void printChoices(List<POI> choices) {
@@ -237,28 +236,7 @@ public class Game {
 	}
 	
 	
-	public static void printStatus(Player player) {
-		POI location = world.getPlayerLocation();
-		
-		System.out.println("----- STATUS -----");
-
-        System.out.println("Health: " + player.getHealth());
-        System.out.println("Energy: " + player.getEnergy());
-        System.out.println("Sanity: " + player.getSanity());
-
-        System.out.println();
-
-        System.out.println("Location: " + location.getName());
-        System.out.println("Campable: " + location.canCamp());
-
-        System.out.println();
-
-        System.out.println("Turn: " + worldState.getTurn());
-        System.out.println("Tiles Traveled: " + worldState.getTilesTraveled());
-        System.out.println("Sea Level: " + worldState.getSeaLevel());
-
-        System.out.println("------------------");
-	}
+	
 	
 	public static boolean isRunning() {
 		return running;

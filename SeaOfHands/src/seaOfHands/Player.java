@@ -7,6 +7,7 @@ public class Player extends Entity implements Damagable, Damager{
 	private int energy;
 	private Inventory inv = new Inventory();
 	private int sanity;
+	private Weapon equippedWeapon;
 	
 	//constructor
 	
@@ -41,6 +42,7 @@ public class Player extends Entity implements Damagable, Damager{
 	
 	public void useEnergy() {
 		energy --;
+		System.out.println("Energy -1");
 	}
 	
 	public int getSanity() {
@@ -55,7 +57,7 @@ public class Player extends Entity implements Damagable, Damager{
 	//TODO healable interface?
 	
 	public void setHealth(int health) {
-	    this.health = health;
+	    this.health = Math.min(health, 10);
 	}
 	
 	
@@ -67,9 +69,23 @@ public class Player extends Entity implements Damagable, Damager{
 	
 	public void resetEnergy(int energy) {
 		this.energy = energy;
+	
+	}
+	public void setEnergy(int energy) {
+		if (energy != 6){
+			this.energy = Math.min(energy, 5);
+
+		}
 	}
 	
 	public Inventory getInventory() {
 		return inv;
+	}
+	public Weapon getEquippedWeapon() {
+	    return equippedWeapon;
+	}
+
+	public void equipWeapon(Weapon weapon) {
+	    equippedWeapon = weapon;
 	}
 }

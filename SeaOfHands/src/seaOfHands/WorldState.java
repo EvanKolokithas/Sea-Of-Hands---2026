@@ -11,9 +11,12 @@ public class WorldState {
 	private int seaLevel;
 	private int seaSpeed;
 	
+	private Enemy currentEnemy;
+	private boolean inCombat = false;
+	
 	//Turns at which sea speed and sanity increases.
-	final int[] seaSpeedTurns = {10, 20, 30};
-	final int[] sanityTurns = {3, 7};
+	final int[] seaSpeedTurns = {2, 6, 9,11,12,13,14};
+	final int[] sanityTurns = {2, 6};
 
 	
 	
@@ -44,10 +47,6 @@ public class WorldState {
 		return turn;
 	}
 	
-	public void incTurn() {
-		turn ++;
-	}
-	
 	public int[] getSeaSpeedTurns() {
 		return seaSpeedTurns;
 	}
@@ -67,6 +66,26 @@ public class WorldState {
 		return tilesTraveled;
 	}
 
+	public void setEnemy(Enemy enemy) {
+		currentEnemy = enemy;
+	}
+	
+	public void enterCombat() {
+		inCombat = true;
+	}
+
+	public boolean inCombat() {
+		return inCombat;
+	}
+	
+	public Enemy getEnemy() {
+	    return currentEnemy;
+	}
+
+	public void endCombat() {
+	    currentEnemy = null;
+	    inCombat = false;
+	}
 	
 	
 
