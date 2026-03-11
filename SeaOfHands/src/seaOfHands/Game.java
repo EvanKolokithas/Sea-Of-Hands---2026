@@ -3,6 +3,15 @@ package seaOfHands;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import commands.CommandManager;
+import commands.DiscardCommand;
+import commands.EndTurnCommand;
+import commands.ForageCommand;
+import commands.HelpCommand;
+import commands.InventoryCommand;
+import commands.LootCommand;
+import commands.MoveCommand;
+import commands.StatusCommand;
 import dataBase.DatabaseManager;
 
 import java.time.LocalTime;
@@ -12,6 +21,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 import java.util.Map;
 import java.util.List;
 import java.util.TreeMap;
@@ -39,6 +49,9 @@ public class Game {
 	//vars
 	private static World world = new World();
 	private static WorldState worldState = new WorldState();
+	private static CommandManager manager = new CommandManager();
+	
+	private static boolean running = true;
 	
 
 	
@@ -50,11 +63,11 @@ public class Game {
 	}
 	
 	//getters
-	public World getWorld() {
+	public static World getWorld() {
 		return world;
 	}
 	
-	public WorldState getWorldState() {
+	public static WorldState getWorldState() {
 		return worldState;
 	}
 	
@@ -66,7 +79,24 @@ public class Game {
 	//main class
 	public static void main(String[] args) {
 		
-		try {
+		//register all commands
+		manager.register(new EndTurnCommand());
+		manager.register(new HelpCommand(manager));
+		manager.register(new MoveCommand());
+		manager.register(new StatusCommand());
+		manager.register(new InventoryCommand());
+		manager.register(new DiscardCommand());
+		manager.register(new LootCommand());
+		manager.register(new ForageCommand());
+		
+		//TODO commands
+		//use item
+		//info item
+		//camp
+		
+		
+		//try with resources
+		try (Scanner scanner = new Scanner(System.in)){
 			
 			
 			// initialize database
@@ -85,15 +115,7 @@ public class Game {
 			
 			// Health | Energy | Sanity
 			Player player = new Player(10, 5, 1);
-			
-			//Turns at which sea speed increases.
-			final int[] seaSpeedTurns = {10, 20, 30};
-			final int[] sanityTurns = {3, 7};
-			
-			
-			boolean running = true;
-			
-			boolean endTurn = false;
+			printStatus(player);	
 			
 			while(running) {
 				/*
@@ -110,32 +132,14 @@ public class Game {
 				 * 		
 				 */
 				
+				System.out.print("What would you like to do?> ");
+				String input = scanner.nextLine();
+				manager.executeCommand(input, player, world, worldState);
 				
-				
-				
-				
-				while(!endTurn) {
-					//TODO perform actions
-					
-					//gets list of choices (should be in travel command function
-					List<POI> choices = world.getRandomPOIs((int)(Math.random() * 2) + 2, player.getSanity());
-					printChoices(choices);
-					
-					System.out.println();
-					
-					endTurn = true;
-					
-				}
-				
-				
-				endTurn(player, seaSpeedTurns, sanityTurns);
-				//running = floodCheck();
-				running = false;
-				endTurn = false;
 			}
 			
 			//end of game
-			endGame(databaseManager);
+			endGame(databaseManager, player);
 			
 			
 		}
@@ -171,9 +175,8 @@ public class Game {
 		return running;
 	}
 
-	private static void endTurn(Player player, int[] seaSpeedTurn, int[] sanityTurns) {
-		
-		
+	public static void endTurn(Player player) {
+				
 		//Energy 
 		
 		if(world.getPlayerLocation().canCamp()) {
@@ -187,19 +190,21 @@ public class Game {
 		
 		//Sea speed
 		
-		if(Arrays.stream(seaSpeedTurn).anyMatch(n -> n == worldState.getTurn())) {
+		if(Arrays.stream(worldState.getSeaSpeedTurns()).anyMatch(n -> n == worldState.getTurn())) {
 			worldState.incSeaSpeed();
 		}
 		
 		//Sanity
 		
-		if(Arrays.stream(sanityTurns).anyMatch(n -> n == worldState.getTurn())) {
+		if(Arrays.stream(worldState.getSanityTurns()).anyMatch(n -> n == worldState.getTurn())) {
 			player.incSanity();
 		}
 		
 		//Turn
 		
 		worldState.incTurn();
+		
+		running = floodCheck() && healthCheck(player);
 		
 	}
 	
@@ -213,7 +218,7 @@ public class Game {
 		return running;
 	}
 	
-	private static void endGame(DatabaseManager databaseManager) {
+	private static void endGame(DatabaseManager databaseManager, Player player) {
 		// retrieve outro message
 				String outroMessage = databaseManager.retrieveMessage("outro");
 
@@ -221,110 +226,47 @@ public class Game {
 				System.out.println(outroMessage);
 				
 				//print stats
-				System.out.println("Turns: " + worldState.getTurn());
-				System.out.println("Tiles: " + worldState.getTilesTraveled());
-				System.out.println("Sea Level " + worldState.getSeaLevel());
+				printStatus(player);
 	}
 	
-	
-	private static void testDateTime(LocalTime time, Locale locale) {
-		
-		//create a resourceBundle based on property files for language
-		ResourceBundle bundle = ResourceBundle.getBundle("SeaOfHands.messages", locale);
-		
-		//gets time
-		int hour = time.getHour();
-		
-		//gets a string for the bundle
-		String messageKey = switch(hour) {
-			case 0, 1, 2, 3, 4, 5, 6 -> "early";
-			case 7, 8, 9, 10, 11 -> "morning";
-			case 12 -> "noon";
-			case 13, 14, 15, 16, 17, 18, 19, 20 -> "afternoon";
-			default  -> "evening";
-		};
-		
-		//prints time and message
-		System.out.println("Current Time: " + time);
-		System.out.println(bundle.getString(messageKey));
-		
-	}
-	
-	private static void testUnit5() {
-		//tests for Unit 5
-		
-		 // Sort alphabetically (natural order)
-		List<Structure> allStructures = world.getAllStructures();
-		
-		// Sort alphabetically using Comparable (natural order)
-		Collections.sort(allStructures);
-		System.out.println("Structures sorted alphabetically:");
-		for (Structure s : allStructures) {
-		    System.out.println(s.getName() + " (Sanity " + s.getSanityLevel() + ")");
-		}
-
-		// Sort by sanity using Comparator
-		allStructures.sort(Structure.SanityComparator);
-		System.out.println("\nStructures sorted by sanity:");
-		for (Structure s : allStructures) {
-		    System.out.println(s.getName() + " (Sanity " + s.getSanityLevel() + ")");
-		}
-		
-		
-		//store all structures in a treeset for demonstration
-		Set<String> structureNames = new TreeSet<>();
-		for (Structure s : allStructures) {
-		    structureNames.add(s.getName());
-		}
-		
-		System.out.println("\nDemonstrating a Set (tree set):");
-		for (String name : structureNames) {
-		    System.out.println(name);
-		}
-		
-		//store all structures along with their sanities in a treemap
-		Map<Integer, List<Structure>> structuresBySanity = new TreeMap<>();
-
-		for (Structure s : allStructures) {
-		    //get sanity
-			int sanity = s.getSanityLevel();
-		    
-			//creates a new array list for each sanity level
-		    structuresBySanity.putIfAbsent(sanity, new ArrayList<>());
-		    structuresBySanity.get(sanity).add(s);
-		}
-
-		
-		System.out.println("\nDemonstrating a Map (structures grouped by sanity):");
-		for (Map.Entry<Integer, List<Structure>> entry : structuresBySanity.entrySet()) {
-		    System.out.println("Sanity " + entry.getKey() + ":");
-		    for (Structure s : entry.getValue()) {
-		        System.out.println(" - " + s.getName());
-		    }
-		}
-		
-		System.out.println();
-		
-
-	}
-	
-	private static void testTime() {
-		//gets the current time
-		LocalTime currentTime = LocalTime.now();
-		Locale locale = Locale.getDefault();
-		
-		testDateTime(currentTime, locale);
-		
-		testDateTime(LocalTime.of(6, 0), new Locale("en"));
-		
-		testDateTime(LocalTime.of(16, 0), new Locale("es"));
-	}
-	
-	private static void printChoices(List<POI> choices) {
+	public static void printChoices(List<POI> choices) {
 		System.out.println("There are " + choices.size() + " paths ahead of you:");
 		for(int i = 0; i < choices.size(); i++) {
 			System.out.println("\tPath " + (i + 1) + " leads to a " + choices.get(i).getName() + ".");
 		}
 	}
+	
+	
+	public static void printStatus(Player player) {
+		POI location = world.getPlayerLocation();
+		
+		System.out.println("----- STATUS -----");
+
+        System.out.println("Health: " + player.getHealth());
+        System.out.println("Energy: " + player.getEnergy());
+        System.out.println("Sanity: " + player.getSanity());
+
+        System.out.println();
+
+        System.out.println("Location: " + location.getName());
+        System.out.println("Campable: " + location.canCamp());
+
+        System.out.println();
+
+        System.out.println("Turn: " + worldState.getTurn());
+        System.out.println("Tiles Traveled: " + worldState.getTilesTraveled());
+        System.out.println("Sea Level: " + worldState.getSeaLevel());
+
+        System.out.println("------------------");
+	}
+	
+	public static boolean isRunning() {
+		return running;
+	}
+	
+	public static void stopGame() {
+		running = false;
+	}
+	
 }
 

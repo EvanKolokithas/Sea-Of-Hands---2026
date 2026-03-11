@@ -11,8 +11,8 @@ public class Consumable extends Item implements Usable {
 	//constructor
 	//could do overloaded constructor (one for health one for energy one for both)?
 	
-	public Consumable(String name, String desc, int healthRestore, int energyRestore) {
-		super(name, desc);
+	public Consumable(String name, String desc, int sanity, int healthRestore, int energyRestore) {
+		super(name, desc, sanity);
 		
 		this.healthRestore = healthRestore;
 		this.energyRestore = energyRestore;

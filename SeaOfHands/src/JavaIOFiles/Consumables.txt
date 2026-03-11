@@ -1,0 +1,17 @@
+Dried Fish|Tough but filling|2|1|1
+Hardtack|Bland but sustaining|1|2|1
+Bitter Herbs|Medicinal leaves gathered from the shore|1|0|1
+Seaweed Snack|A salty, chewy treat|0|2|1
+Shoreline Berries|Small red berries with a tangy taste|1|1|1
+
+Salted Meat|A preserved ration from an old supply crate|3|2|2
+Strange Berries|Faintly glowing fruit with a bitter taste|1|1|2
+Spiced Broth|Warm liquid that steadies the nerves|2|1|2
+Coastal Mushrooms|Edible fungi from damp rocks|2|2|2
+Old Cheese Wheel|A dense, aged chunk of cheese|3|1|2
+
+Black Lotus Extract|A disturbing tonic that sharpens the mind|0|0|3
+Ancient Rations|Food sealed long ago but still edible|4|3|3
+Fermented Tonic|Sharp smelling drink that restores energy|1|3|3
+Sunken Fruit|Rare fruits from forgotten orchards|2|3|3
+Eldritch Mushrooms|Odd fungi that make the stomach uneasy|3|2|3

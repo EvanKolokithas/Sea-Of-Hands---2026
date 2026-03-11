@@ -6,11 +6,11 @@ public class Weapon extends Item implements Usable {
 	
 	//vars
 	private int damage;
-	private int breakChance;
+	private double breakChance;
 	
 	//constructor
-	public Weapon(String name, String desc, int damage, int breakChance) {
-		super(name, desc);
+	public Weapon(String name, String desc, int sanity, int damage, double breakChance) {
+		super(name, desc, sanity);
 		
 		this.damage = damage;
 		this.breakChance = breakChance;
@@ -22,7 +22,7 @@ public class Weapon extends Item implements Usable {
 		return damage;
 	}
 
-	public int getBreakChance() {
+	public double getBreakChance() {
 		return breakChance;
 	}
 	

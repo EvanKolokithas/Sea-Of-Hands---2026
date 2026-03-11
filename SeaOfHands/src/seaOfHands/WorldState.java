@@ -11,6 +11,9 @@ public class WorldState {
 	private int seaLevel;
 	private int seaSpeed;
 	
+	//Turns at which sea speed and sanity increases.
+	final int[] seaSpeedTurns = {10, 20, 30};
+	final int[] sanityTurns = {3, 7};
 
 	
 	
@@ -30,9 +33,12 @@ public class WorldState {
 	}
 	
 	public void incSeaSpeed() {
-		seaSpeed++;
+		seaSpeed ++;
 	}
 	
+	public void incTilesTraveled() {
+		tilesTraveled ++;
+	}
 	
 	public int getTurn() {
 		return turn;
@@ -40,6 +46,14 @@ public class WorldState {
 	
 	public void incTurn() {
 		turn ++;
+	}
+	
+	public int[] getSeaSpeedTurns() {
+		return seaSpeedTurns;
+	}
+	
+	public int[] getSanityTurns() {
+		return sanityTurns;
 	}
 	
 	

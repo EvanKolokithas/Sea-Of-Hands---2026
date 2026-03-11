@@ -24,9 +24,8 @@ public class World {
 	private List<Structure> allStructures;
 	private List<Environment> allEnviorments;
 	private List<Enemy> allEnemies;
-	private List<Consumable> allConsumables;
-	private List<Tool> allTools;
-	private List <Weapon> allWeapons;
+	private static List<Consumable> allConsumables;
+	private static List <Weapon> allWeapons;
 
 	
 	
@@ -37,27 +36,44 @@ public class World {
 		allStructures = new ArrayList<>();
 		allEnviorments = new ArrayList<>();
         allWeapons = new ArrayList<>();
+        allConsumables = new ArrayList<>();
         allEnemies = new ArrayList<>();
-        allTools = new ArrayList<>();
+        
         
 		// populate collections with values from javaIO files
-        initializePOIs();
         initializeItems();
-        initializeEnemies();
+        //initializeEnemies();
+        initializePOIs();
+        
         
 		playerLocation = allStructures.getFirst();
 		startingLocation = allStructures.getFirst();
 	}
 	
+	private void initializeItems() {
+    	//consumables (15) 
+    	
+    	//name | desc | healthRestore | energyRestore | sanity ; 
+    	
+    	allConsumables = initailizeConsumables();
+        
+        //weapons (15)
+    	
+    	//name | desc | damage | breakChance | sanity ;
+    	
+    	allWeapons = initializeWeapons();
+    }
+	
     private void initializePOIs() {
     	//structures (12) raidable and campable auto set to false and randomized when initialized later unless always true
     	
-    	//name | desc | camp | sanity| raid ; where camp and raid are only set to true if always true
+    	//name | desc | camp | sanity | raid ; where camp and raid are only set to true if always true
     	
     	allStructures = initializeStructures();
         
-        //enviorments
-    	//TODO add all enviorments
+        //enviorments (15)
+    	
+    	//name | desc | camp | sanity | forage
     	
     	allEnviorments = initailizeEnviorments();
         
@@ -83,10 +99,10 @@ public class World {
                 String name = data[0].trim();
                 String description = data[1].trim();
                 boolean camp = Boolean.parseBoolean(data[2].trim());
-                int sanityTier = Integer.parseInt(data[3].trim());
-                boolean raid = Boolean.parseBoolean(data[4].trim());
+                int sanity = Integer.parseInt(data[3].trim());
+                boolean loot = Boolean.parseBoolean(data[4].trim());
 
-                structures.add(new Structure(name, description, camp, sanityTier, raid));
+                structures.add(new Structure(name, description, camp, loot, sanity, allConsumables, allWeapons));
             }
 
         } catch (IOException e) {
@@ -117,7 +133,7 @@ public class World {
                 int sanityTier = Integer.parseInt(data[3].trim());
                 boolean forage = Boolean.parseBoolean(data[4].trim());
 
-                enviorments.add(new Environment(name, description, camp, sanityTier, forage));
+                enviorments.add(new Environment(name, description, camp, sanityTier, forage, allConsumables));
             }
 
         } catch (IOException e) {
@@ -127,34 +143,64 @@ public class World {
         return enviorments;
     }
     
-    private void initializeItems() {
-        //TODO add all Items
+   
+    private static List<Consumable> initailizeConsumables() {
+    	List<Consumable> consumables = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(".\\src\\JavaIOFiles\\Consumables.txt"))) {
+
+            String line;
+            
+            while ((line = reader.readLine()) != null) {
+
+                if (line.trim().isEmpty()) continue;
+
+                String[] data = line.split("\\|");
+                	
+                
+                String name = data[0].trim();
+                String description = data[1].trim();
+                int healthRestore = Integer.parseInt(data[2].trim());
+                int energyRestore = Integer.parseInt(data[3].trim());
+                int sanity = Integer.parseInt(data[4].trim());
+                consumables.add(new Consumable(name, description, healthRestore, energyRestore, sanity));
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return consumables;
     	
-    	//Consumables #
-    	
-    	//sanity 1
-    	
-    	//sanity 2
-    	
-    	//sanity 3
-    	
-    	
-    	//Tools #
-    	
-    	//sanity 1
-    	
-    	//sanity 2
-    	
-    	//sanity 3
-    	
-    	//Weapons #
-    	
-    	//sanity 1
-    	
-    	//sanity 2
-    	
-    	//sanity 3
-    	
+    }
+    
+    private static List<Weapon> initializeWeapons(){
+    	List<Weapon> weapons = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(".\\src\\JavaIOFiles\\Weapons.txt"))) {
+
+            String line;
+            
+            while ((line = reader.readLine()) != null) {
+
+                if (line.trim().isEmpty()) continue;
+
+                String[] data = line.split("\\|");
+                	
+                
+                String name = data[0].trim();
+                String description = data[1].trim();
+                int damage = Integer.parseInt(data[2].trim());
+                double breakChance = Double.parseDouble(data[3].trim());
+                int sanity = Integer.parseInt(data[4].trim());
+                weapons.add(new Weapon(name, description, sanity, damage, breakChance));
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return weapons;
     }
 
     private void initializeEnemies() {
@@ -239,6 +285,13 @@ public class World {
 		return playerLocation;
 	}
 	
+	public void setPlayerLocation(POI poi, Player player) {
+		playerLocation = poi;
+
+	    System.out.println("You arrive at the " + poi.getName());
+
+	    Game.getInstance().printStatus(player);
+	}
 	public List<Structure> getAllStructures() {
 		return allStructures; 
 	}
@@ -246,24 +299,14 @@ public class World {
 		return allEnviorments; 
 	}
 	
-	
     public List<Weapon> getAllWeapons() {
     	return allWeapons; 
     }
     public List<Consumable> getAllConsumables() {
     	return allConsumables; 
     }
-    public List<Tool> getAllTools() {
-    	return allTools; 
-    }
     
     public List<Enemy> getAllEnemies() {
     	return allEnemies; 
     }
-
-	
-	public void move(Direction direction) {
-		//TODO develop move method inside World and POI
-	}
-
 }

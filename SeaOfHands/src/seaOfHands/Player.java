@@ -35,8 +35,12 @@ public class Player extends Entity implements Damagable, Damager{
 		return this.health;
 	}
 	
-	public int getStamina() {
+	public int getEnergy() {
 		return this.energy;
+	}
+	
+	public void useEnergy() {
+		energy --;
 	}
 	
 	public int getSanity() {
@@ -63,5 +67,9 @@ public class Player extends Entity implements Damagable, Damager{
 	
 	public void resetEnergy(int energy) {
 		this.energy = energy;
+	}
+	
+	public Inventory getInventory() {
+		return inv;
 	}
 }

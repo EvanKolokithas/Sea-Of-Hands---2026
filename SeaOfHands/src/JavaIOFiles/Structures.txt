@@ -1,4 +1,4 @@
-Beach House| A small cabin with salted floorboards and messy rooms. You have lived here for as long as you remember; it's the closest thing you have to a home.| false| 1| false
+Beach House| A small cabin with salted floorboards and messy rooms. You have lived here for as long as you remember; it's the closest thing you have to a home.| true| 1| true
 Firewatch Tower| A tall and creaky tower traditionally used for spotting fires, clearly abandoned years ago.| false| 1| false
 Abandoned House| A modest house with swollen doors and warped floorboards. Dust covers its walls, and plants sprout between holes in the floor.| false| 1| false
 Campsite| A cozy campsite with sleeping bags still set up around a small fire pit.| true| 1| false

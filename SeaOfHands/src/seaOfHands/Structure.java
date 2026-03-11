@@ -1,46 +1,54 @@
 package seaOfHands;
 
-import java.util.Comparator;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
+public class Structure extends POI {
 
-public class Structure extends POI implements Lootable, Comparable<Structure>{
+    private final List<Item> possibleLoot;
 
-	//Structures are POIs that are often raidable, not explorable. They dont have enimeis and are often already campable;
-	
-	//vars
-	private Inventory items;
-	private boolean raid;
-	
-	//sort by sanity level ascending
-    public static Comparator<Structure> SanityComparator = 
-    	    (s1, s2) -> Integer.compare(s1.getSanityLevel(), s2.getSanityLevel());
-	
-	//constructor
-	public Structure(String name, String desc, boolean camp, int sanityLevel, boolean raid) {
-		super(name, desc, camp, sanityLevel);
-		
-		this.raid = raid;
-	}
-	
-	//Methods
-	
-	public boolean isRaidable() {
-		return raid;
-	}
-	
-	@Override
-	public Inventory loot() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	//alphabetical
-    @Override
-    public int compareTo(Structure other) {
-        return this.name.compareTo(other.name);
+    public Structure(String name, String desc, boolean camp, boolean lootable, int sanityLevel, List<Consumable> consumables, List<Weapon> weapons) {
+        super(name, desc, camp, lootable, sanityLevel);
+        possibleLoot = new ArrayList<>();
+        possibleLoot.addAll(consumables);
+        possibleLoot.addAll(weapons);
+        
     }
-    
-    
-    
-    
+
+    @Override
+    public void onArrival() {
+        if (!lootable) {
+        	// 70% chance to become lootable
+        	lootable = Math.random() <= 0.7;
+        }
+            
+        if (!camp) {
+        	// 20% chance to become campable
+        	camp = Math.random() <= 0.2;
+        }
+
+        used = false;
+        
+    }
+
+    public Item getRandomLoot() {
+        if (!isLootable() || possibleLoot.isEmpty()) {
+        	return null;
+        }
+
+        List<Item> validItems = possibleLoot.stream()
+                .filter(item -> item.getSanity() <= sanityLevel && item.getSanity() >= sanityLevel - 1)
+                .collect(Collectors.toList());
+
+        if (validItems.isEmpty()) return null;
+
+        int index = (int) (Math.random() * validItems.size());
+        return validItems.get(index);
+    }
+
+    @Override
+    public String getInfo() {
+        return name + " : " + desc + " | Campable: " + camp + " | Lootable: " + lootable;
+    }
 }
