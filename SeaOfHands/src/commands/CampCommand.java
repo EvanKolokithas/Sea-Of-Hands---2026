@@ -23,6 +23,7 @@ public class CampCommand implements Command {
         }
 
         System.out.println("You set up camp at the " + location.getName() + ".");
+        location.setUpCamp();
         
         player.useEnergy();
         

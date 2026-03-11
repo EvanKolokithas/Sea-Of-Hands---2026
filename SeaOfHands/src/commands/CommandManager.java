@@ -22,7 +22,10 @@ public class CommandManager {
     public Set<String> getCommandNames() {
         return commands.keySet();
     }
-
+    
+    public void registerAlias(String alias, Command cmd) {
+        commands.put(alias.toLowerCase(), cmd);
+    }
     /**
      * Verb Noun Parser
      * 

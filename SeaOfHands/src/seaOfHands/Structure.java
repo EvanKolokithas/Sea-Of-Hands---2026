@@ -32,13 +32,13 @@ public class Structure extends POI {
         
     }
 
-    public Item getRandomLoot() {
+    public Item getRandomLoot(Player player) {
         if (!isLootable() || possibleLoot.isEmpty()) {
         	return null;
         }
 
         List<Item> validItems = possibleLoot.stream()
-                .filter(item -> item.getSanity() <= sanityLevel && item.getSanity() >= sanityLevel - 1)
+                .filter(item -> item.getSanity() <= player.getSanity() && item.getSanity() >= player.getSanity() - 1)
                 .collect(Collectors.toList());
 
         if (validItems.isEmpty()) return null;

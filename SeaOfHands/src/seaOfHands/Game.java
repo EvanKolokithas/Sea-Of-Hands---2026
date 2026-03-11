@@ -33,15 +33,11 @@ import java.util.TreeMap;
 import java.util.Set;
 import java.util.TreeSet;
 
-/**
- * Main Class for the game
- * Singleton Pattern:
- * 
- * Only one instance of the game will be created as well as for world and worldState so
- * 
- * @author Evan
- */
 
+/***
+ * Main class for the game, singleton pattern
+ * 
+ */
 public class Game {
 	
 	private static Game instance;
@@ -53,7 +49,16 @@ public class Game {
 	
 	private static boolean running = true;
 	
-
+	//logging
+		final static Logger log = 
+				LogManager.getLogger("Example");
+		
+	
+	/***
+	 * Constructor for game, creates a new instance of game, singleton pattern
+	 * 
+	 * @return instance of game
+	 */
 	
 	public static Game getInstance() {
 		if (instance == null) {
@@ -63,20 +68,47 @@ public class Game {
 	}
 	
 	//getters
+	/***
+	 * Getter for world
+	 * 
+	 * @return world object
+	 */
 	public static World getWorld() {
 		return world;
 	}
 	
+	/***
+	 * Getter for worldState
+	 * 
+	 * @return worldState object
+	 */
 	public static WorldState getWorldState() {
 		return worldState;
 	}
 	
-	//logging
-	final static Logger log = 
-			LogManager.getLogger("Example");
+	/***
+	 * Getter for running
+	 * 
+	 * @return running boolean
+	 */
+	public static boolean isRunning() {
+		return running;
+	}
 	
+	//setters
+	/***
+	 * setter for running
+	 * 
+	 */
+	public static void stopGame() {
+		running = false;
+	}
 	
-	//main class
+	/***
+	 * Main class for game, contains register for all commands, contains main game loop
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		
 		//register all commands
@@ -94,44 +126,37 @@ public class Game {
 		manager.register(new CombatCommand(new Scanner(System.in)));
 		manager.register(new UseCommand());
 		
+		//register aliases
+		manager.registerAlias("end", new EndTurnCommand());
+		
 		
 		//try with resources
 		try (Scanner scanner = new Scanner(System.in)){
 			
 			
-			// initialize database
+			//initialize database
 			DatabaseManager databaseManager = new DatabaseManager();
 
-			// populate table
+			//populate table
 			databaseManager.populateGameData();
 
 			
 			//initial game loop
 			
 			startGame(databaseManager);
-
-			//Player created with default values
-			//TODO default constructor
 			
 			// Health | Energy | Sanity
 			Player player = new Player(10, 5, 1);
 			UI.printStatus(player, world, worldState);	
 			manager.executeCommand("help", player, world, worldState);
 			
+			/***
+			 * Main game loop: take turn - end turn - reset
+			 * Uses running flag and scanner object
+			 * Uses manager to execute the inputed commands
+			 * 
+			 */
 			while(running) {
-				/*
-				 * Proccess
-				 * 
-				 * Take turn - while not end turn - player actions
-				 * 		perform actions - need combat loop to check for health
-				 * 
-				 * End turn - advance sea - check flooded condition
-				 * 
-				 * Reset:
-				 * 		Energy based on current tile campable
-				 * 		Sea speed based on tiles traveled
-				 * 		
-				 */
 				
 				System.out.print("What would you like to do?> ");
 				String input = scanner.nextLine();
@@ -145,16 +170,24 @@ public class Game {
 			
 		}
 		catch(IllegalStateException e) {
-			//unsure what information to log for now
+			//debug error info if occurred
 			log.debug("Game failed to start: " + e);
 		}
 		finally{
+			//debug game end info
 			log.debug("Game start attempt complete");
 		}
 		
 		
 	}
 	
+	//data base
+	
+	/***
+	 * Prints intro message from database
+	 * 
+	 * @param databaseManager: object for accessing the database
+	 */
 	private static void startGame(DatabaseManager databaseManager) {
 		
 		// retrieve intro message
@@ -164,6 +197,31 @@ public class Game {
 		System.out.println(introMessage);
 	}
 	
+	/***
+	 * Prints outro message from database and player status to act as a sort of score
+	 * 
+	 * @param databaseManager: object for accessing data base
+	 * @param player: Player object to print stats
+	 */
+	private static void endGame(DatabaseManager databaseManager, Player player) {
+		// retrieve outro message
+				String outroMessage = databaseManager.retrieveMessage("outro");
+
+				// print outro message
+				System.out.println(outroMessage);
+				
+				//print stats
+				UI.printStatus(player, world, worldState);
+	}
+	
+	//checks
+	
+	/***
+	 * Checks if the player is alive
+	 * 
+	 * @param player: object to access players health
+	 * @return boolean to set running to false if player is not alive
+	 */
 	private static boolean healthCheck(Player player) {
 		boolean running = true;
 			
@@ -173,7 +231,29 @@ public class Game {
 		
 		return running;
 	}
-
+	
+	/***
+	 * Checks if the sea reaches the player
+	 * 
+	 * @return boolean if players location is in the sea
+	 */
+	private static boolean floodCheck() {
+		boolean running = true;
+		
+		if(worldState.getTilesTraveled() <= worldState.getSeaLevel())
+			running = false;
+		
+		
+		return running;
+	}
+	
+	//methods
+	
+	/***
+	 * Increments and resets world and player data at end of turn
+	 * 
+	 * @param player: object to access and modify player health and energy
+	 */
 	public static void endTurn(Player player) {
 				
 		//Energy 
@@ -205,45 +285,6 @@ public class Game {
 		
 		running = floodCheck() && healthCheck(player);
 		
-	}
-	
-	private static boolean floodCheck() {
-		boolean running = true;
-		
-		if(worldState.getTilesTraveled() <= worldState.getSeaLevel())
-			running = false;
-		
-		
-		return running;
-	}
-	
-	private static void endGame(DatabaseManager databaseManager, Player player) {
-		// retrieve outro message
-				String outroMessage = databaseManager.retrieveMessage("outro");
-
-				// print outro message
-				System.out.println(outroMessage);
-				
-				//print stats
-				UI.printStatus(player, world, worldState);
-	}
-	
-	public static void printChoices(List<POI> choices) {
-		System.out.println("There are " + choices.size() + " paths ahead of you:");
-		for(int i = 0; i < choices.size(); i++) {
-			System.out.println("\tPath " + (i + 1) + " leads to a " + choices.get(i).getName() + ".");
-		}
-	}
-	
-	
-	
-	
-	public static boolean isRunning() {
-		return running;
-	}
-	
-	public static void stopGame() {
-		running = false;
 	}
 	
 }

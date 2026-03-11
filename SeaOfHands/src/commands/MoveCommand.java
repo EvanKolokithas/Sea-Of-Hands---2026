@@ -6,6 +6,7 @@ import seaOfHands.Game;
 import seaOfHands.World;
 import seaOfHands.WorldState;
 import seaOfHands.Player;
+import seaOfHands.UI;
 import seaOfHands.POI;
 
 import java.util.List;
@@ -38,7 +39,7 @@ public class MoveCommand implements Command {
         
         // print choices
         Game.getInstance();
-		Game.printChoices(choices);
+		UI.printChoices(choices);
 
         // ask player for choice
         System.out.print("Choose a path: ");
@@ -81,6 +82,6 @@ public class MoveCommand implements Command {
 
 	@Override
 	public String getDescription() {
-		return null;
+		return "Gives the player 2 to 3 paths to choose from. Consumes 1 energy";
 	}
 }

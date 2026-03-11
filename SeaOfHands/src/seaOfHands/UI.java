@@ -70,4 +70,11 @@ public class UI {
 
         System.out.println("=====================");
 	}
+	
+	public static void printChoices(List<POI> choices) {
+		System.out.println("There are " + choices.size() + " paths ahead of you:");
+		for(int i = 0; i < choices.size(); i++) {
+			System.out.println("\tPath " + (i + 1) + " leads to a " + choices.get(i).getName() + ".");
+		}
+	}
 }

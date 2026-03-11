@@ -23,7 +23,7 @@ public class StatusCommand implements Command {
 
 	@Override
 	public String getDescription() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return "Shows important info about the player";
 	}
 }

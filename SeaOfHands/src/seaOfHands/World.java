@@ -5,16 +5,13 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.*;
 import java.util.stream.Collectors;
 
-
-
-
-
+/***
+ * Class to contain data about the players location and lists for all Items, POIs, and Enemies
+ * 
+ */
 public class World {
-	
-	//Class for player position
 	
 	//vars
 	
@@ -30,7 +27,10 @@ public class World {
 	
 	
 	
-	//constructor
+	/***
+	 * Constructor for world, initializes all lists
+	 * 
+	 */
 	public World() {
 		// initialize collections
 		allStructures = new ArrayList<>();
@@ -50,6 +50,12 @@ public class World {
 		startingLocation = allStructures.getFirst();
 	}
 	
+	//initializer collectors
+	
+	/***
+	 * Initializer for items, sets consumables and weapons
+	 * 
+	 */
 	private void initializeItems() {
     	//consumables (15) 
     	
@@ -64,6 +70,10 @@ public class World {
     	allWeapons = initailizeWeapons();
     }
 	
+	/***
+	 * Initializer for pois, sets structures and enviorments
+	 * 
+	 */
     private void initializePOIs() {
     	//structures (12) raidable and campable auto set to false and randomized when initialized later unless always true
     	
@@ -81,6 +91,13 @@ public class World {
         
     }
     
+    //initializers
+    
+    /***
+     * Initializer for structures, reads from javaIO file
+     * 
+     * @return List of all structures in the game
+     */
     public static List<Structure> initializeStructures() {
 
         List<Structure> structures = new ArrayList<>();
@@ -112,6 +129,11 @@ public class World {
         return structures;
     }
 
+    /***
+     * Initializer for environments, reads from javaIO file
+     * 
+     * @return List of all environments in the game
+     */
     public static List<Environment> initailizeEnviorments() {
 
         List<Environment> enviorments = new ArrayList<>();
@@ -143,7 +165,11 @@ public class World {
         return enviorments;
     }
     
-   
+    /***
+    * Initializer for consumables, reads from javaIO file
+    * 
+    * @return list of all consumables in the game
+    */
     private static List<Consumable> initailizeConsumables() {
     	List<Consumable> consumables = new ArrayList<>();
 
@@ -174,6 +200,11 @@ public class World {
     	
     }
     
+    /***
+     * Initializer for weapons, reads from javaIO file
+     * 
+     * @return list of all weapons in the game
+     */
     private static List<Weapon> initailizeWeapons(){
     	List<Weapon> weapons = new ArrayList<>();
 
@@ -203,6 +234,11 @@ public class World {
         return weapons;
     }
 
+    /***
+     * Initializer for Enemies, reads names from javaIO file
+     * 
+     * @return list of all possible enemy names
+     */
     private static List<String> initailizeEnemies() {
     	List<String> enemies = new ArrayList<>();
 
@@ -226,9 +262,17 @@ public class World {
         return enemies;
     }
   
-    	
+    //Random Functions
     //Predicate functional interface and Supplier 
-    	
+    
+    /***
+     * Gets random POI from a list of POIs
+     * 
+     * @param <T>
+     * @param allPOIs
+     * 
+     * @return POI at random index
+     */
     public <T extends POI> T getRandomPOI(List<T> allPOIs) {
 
     	if (allPOIs.isEmpty()) {
@@ -244,11 +288,11 @@ public class World {
     /**
      * Gets a list of n random POIs with the max of 1 structure
      * 
-     * @param n
-     * @param playerSanity
-     * @param current
+     * @param n: number of POIs
+     * @param playerSanity: use sanity to filter POIs
+     * @param current: use current POI to avoid repeats and structure chains
      * 
-     * @return
+     * @return List of n number of POIs
      */
     public List<POI> getRandomPOIs(int n, int playerSanity) {
 
@@ -292,6 +336,11 @@ public class World {
         return choices;
     }
     
+    /**
+     * Gets a random name from enemy names
+     * 
+     * @return enemy name at random index
+     */
     public String getRandomEnemyName() {
 
         int index = (int)(Math.random() * allEnemies.size());
@@ -299,6 +348,15 @@ public class World {
         return allEnemies.get(index);
     }
     
+    // functions
+    
+    /**
+     * Makes an enemy with random stats and a random name
+     * 
+     * @param sanityLevel: filter possible stats based on player sanity
+     *  
+     * @return enemy: random enemy with random name and random stats
+     */
     public Enemy generateEnemy(int sanityLevel) {
 
         String name = getRandomEnemyName();
@@ -328,10 +386,67 @@ public class World {
     }
     
     //getters
+    
+    /**
+     * Getter for player location
+     * 
+     * @return player location POI
+     */
 	public POI getPlayerLocation() {
 		return playerLocation;
 	}
 	
+	/***
+	 * Getter for all structures
+	 * 
+	 * @return List of all structures
+	 */
+	public List<Structure> getAllStructures() {
+		return allStructures; 
+	}
+	
+	/***
+	 * Getter for all envoirments
+	 * 
+	 * @return List of all envoirments
+	 */
+	public List<Environment> getAllEnvoirments() {
+		return allEnviorments; 
+	}
+	
+	/***
+	 * Getter for all weapons
+	 * 
+	 * @return List of all weapons
+	 */
+    public List<Weapon> getAllWeapons() {
+    	return allWeapons; 
+    }
+    
+    /***
+	 * Getter for all consumables
+	 * 
+	 * @return List of all consumables
+	 */
+    public List<Consumable> getAllConsumables() {
+    	return allConsumables; 
+    }
+    
+    /***
+	 * Getter for all enemies
+	 * 
+	 * @return List of all enemies
+	 */
+    public List<String> getAllEnemies() {
+    	return allEnemies; 
+    }
+    
+    //setters
+    
+    /***
+	 * Setter for player location, prints status
+	 * 
+	 */
 	public void setPlayerLocation(POI poi, Player player) {
 		playerLocation = poi;
 
@@ -340,21 +455,5 @@ public class World {
 	    UI.printStatus(player, this, Game.getWorldState());
 	}
 	
-	public List<Structure> getAllStructures() {
-		return allStructures; 
-	}
-	public List<Environment> getAllEnvoirments() {
-		return allEnviorments; 
-	}
 	
-    public List<Weapon> getAllWeapons() {
-    	return allWeapons; 
-    }
-    public List<Consumable> getAllConsumables() {
-    	return allConsumables; 
-    }
-    
-    public List<String> getAllEnemies() {
-    	return allEnemies; 
-    }
 }

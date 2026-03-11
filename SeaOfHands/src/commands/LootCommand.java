@@ -38,7 +38,7 @@ public class LootCommand implements Command {
         }
 
         // Attempt to find an item 
-        Item foundItem = structure.getRandomLoot();
+        Item foundItem = structure.getRandomLoot(player);
 
         if (foundItem == null) {
             System.out.println("You search the " + structure.getName() + " but find nothing.");

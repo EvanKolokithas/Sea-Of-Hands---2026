@@ -18,7 +18,6 @@ public class InventoryCommand implements Command {
 
 	@Override
 	public String getDescription() {
-		// TODO Auto-generated method stub
-		return null;
+		return "shows the players inventory";
 	}
 }

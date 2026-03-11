@@ -86,7 +86,7 @@ public class Combat {
         if (player.getEquippedWeapon() != null) {
             damage = player.getEquippedWeapon().getDamage();
             if(Math.random() < player.getEquippedWeapon().getBreakChance()) {
-            	System.out.println("Your " + player.getEquippedWeapon() + " broke dealing + 2 damage.");
+            	System.out.println("Your " + player.getEquippedWeapon().getName() + " broke dealing + 2 damage.");
             	damage += 2;
             	player.equipWeapon(null);
             }
